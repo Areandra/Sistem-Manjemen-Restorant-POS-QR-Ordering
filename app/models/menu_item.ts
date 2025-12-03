@@ -30,7 +30,7 @@ export default class MenuItem extends BaseModel {
   @column()
   declare sku: string | null
 
-  @belongsTo(() => MenuCategory)
+  @belongsTo(() => MenuCategory, { foreignKey: 'categoryId' })
   declare category: BelongsTo<typeof MenuCategory>
 
   @column.dateTime({ autoCreate: true })

@@ -27,7 +27,7 @@ export default class OrderItem extends BaseModel {
   declare notes: string | null
 
   @column()
-  declare status: 'ordered' | 'cooking' | 'ready' | 'delivered'
+  declare status: 'cart' | 'ordered' | 'cooking' | 'ready' | 'delivered'
 
   @belongsTo(() => Order)
   declare order: BelongsTo<typeof Order>

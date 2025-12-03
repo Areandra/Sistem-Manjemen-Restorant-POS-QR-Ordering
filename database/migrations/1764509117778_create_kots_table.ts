@@ -13,8 +13,8 @@ export default class extends BaseSchema {
       table.enum('section', ['kitchen', 'bar'])
       table.enum('status', ['sent', 'viewed', 'processing', 'done']).defaultTo('sent')
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

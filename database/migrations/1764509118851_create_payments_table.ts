@@ -14,8 +14,8 @@ export default class extends BaseSchema {
       table.enum('status', ['paid', 'refund']).defaultTo('paid')
       table.timestamp('paid_at')
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

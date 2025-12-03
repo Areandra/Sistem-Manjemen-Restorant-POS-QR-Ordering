@@ -9,11 +9,11 @@ export default class extends BaseSchema {
 
       table.integer('order_id').unsigned().references('id').inTable('orders')
       table.string('receipt_number')
-      table.integer('printed_by')
+      table.integer('printed_by').unsigned().references('id').inTable('users')
       table.timestamp('printed_at')
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 
