@@ -133,9 +133,16 @@ router
     router.post('/session/:sessionToken/add-item', [CostumersController, 'addItem'])
     router.post('/session/:sessionToken/update-qty', [CostumersController, 'updateQty'])
     router.post('/session/:sessionToken/delete-item', [CostumersController, 'deleteItem'])
-    router.post('/session/:sessionToken/submit', [CostumersController, 'submit'])
+    router.post('/session/:sessionToken/place-order', [CostumersController, 'placeOrder'])
     router.get('/session/:sessionToken', [CostumerPagesController, 'index']) // menu
     router.get('/session/:sessionToken/cart', [CostumerPagesController, 'cart'])
     router.get('/session/:sessionToken/order', [CostumerPagesController, 'order'])
+    router.get('/session/:sessionToken/categories/:id', [
+      CostumerPagesController,
+      'showByCategories',
+    ])
   })
   .prefix('/order')
+
+
+router.on('/').redirect('/cashier')

@@ -157,8 +157,13 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
 
   // ================= RENDER MAIN =================
 
+  const links = [
+    { label: 'Manajemen', href: '/menu' },
+    { label: 'Kasir', href: '/cashier/order' },
+  ]
+
   return (
-    <CashierLayout>
+    <CashierLayout headerLinks={links}>
       <MenuCategoriesLayout sidebarItems={category} baseUrl="/kitchen/kot">
         <div className="w-full p-4 bg-[#F8F5F0] min-h-screen">
           {/* TOP BAR */}

@@ -112,6 +112,10 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
           <p className="text-gray-600 text-sm">
             Order ID: <span className="font-medium">{order.orderCode}</span>
           </p>
+
+          <p className="text-gray-600 text-sm">
+            Created By: <span className="font-medium">{order.session?.createdByUser.name}</span>
+          </p>
         </div>
 
         {/* ITEMS */}

@@ -12,6 +12,7 @@ export default class extends BaseSchema {
       table.timestamp('started_at')
       table.timestamp('ended_at').nullable()
       table.boolean('is_active').defaultTo(true)
+      table.integer('created_by').unsigned().references('id').inTable('users')
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

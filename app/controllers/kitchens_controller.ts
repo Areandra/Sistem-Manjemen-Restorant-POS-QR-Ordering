@@ -10,7 +10,7 @@ export default class KitchensController {
         q.whereNotIn('status', ['cart']).preload('menuItem', (m) => m.preload('category'))
       )
       .preload('order', (o) => {
-        o.preload('table').preload('createdByUser')
+        o.preload('table')
       })
     return ctx.inertia.render('kitchen/index', {
       kots,
@@ -26,7 +26,7 @@ export default class KitchensController {
 
     const kots = await Kot.query()
       .preload('order', (o) => {
-        o.preload('table').preload('createdByUser')
+        o.preload('table')
       })
       .preload('orderItem', (q) => {
         q.whereNotIn('status', ['cart'])

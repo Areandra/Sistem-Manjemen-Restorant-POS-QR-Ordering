@@ -1,7 +1,15 @@
 import { router } from '@inertiajs/react'
 import CustomerOrderLayout from '~/layout/CostumersOrderLayout'
 
-export default function CartPage({ order, cartItems, sessionToken }: any) {
+export default function CartPage({ data }: any) {
+  const sessionToken = data.sessionToken
+  const orderId = data.orders.length > 0 ? data.orders[0].id : null
+
+  // Ambil semua item dengan status 'cart'
+  const cartItems = data.orders.flatMap((o: any) =>
+    o.items.filter((item: any) => item.status === 'cart')
+  )
+
   const updateQty = (id: any, qty: any) => {
     if (qty <= 0) return
     router.post(`/order/session/${sessionToken}/update-qty`, { itemId: id, qty })
@@ -12,12 +20,13 @@ export default function CartPage({ order, cartItems, sessionToken }: any) {
   }
 
   const placeOrder = () => {
-    router.post(`/order/${order.id}/place-order`)
+    if (!orderId) return
+    router.post(`/order/session/${sessionToken}/place-order`)
   }
 
   return (
-    <CustomerOrderLayout>
-      <h1 className="text-3xl font-bold text-orange-600 mb-4">🧺 Keranjang</h1>
+    <CustomerOrderLayout sessionToken={data.sessionToken}>
+      <h1 className="p-6 text-3xl font-bold text-orange-600 mb-4">🧺 Keranjang</h1>
 
       {cartItems.length === 0 && (
         <p className="text-center text-gray-500 mt-10 text-lg">Keranjang masih kosong 😢</p>
@@ -27,13 +36,15 @@ export default function CartPage({ order, cartItems, sessionToken }: any) {
         {cartItems.map((i: any) => (
           <div key={i.id} className="bg-white shadow p-4 rounded-2xl flex gap-4 items-center">
             <img
-              src={i.menuItem.image ?? 'https://source.unsplash.com/300x200/?food'}
+              src={i.menuItem.imageUrl ?? 'https://source.unsplash.com/300x200/?food'}
               className="w-20 h-20 rounded-xl object-cover"
             />
 
             <div className="flex-1">
               <h3 className="font-bold text-lg">{i.menuItem.name}</h3>
-              <p className="text-orange-500 font-semibold">Rp {i.price.toLocaleString()}</p>
+              <p className="text-orange-500 font-semibold">
+                Rp {parseInt(i.price).toLocaleString()}
+              </p>
 
               <div className="flex items-center gap-3 mt-2">
                 <button

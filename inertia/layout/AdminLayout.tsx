@@ -56,10 +56,16 @@ export default function AdminLayout({ children, overflow }: any) {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-            href="/cashier"
+            href="/cashier/order"
             className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded flex items-center"
           >
             Cashier
+          </Link>
+          <Link
+            href="/kitchen/kot"
+            className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded flex items-center"
+          >
+            Kitchen
           </Link>
           <span className="text-sm font-medium text-gray-700">Hi, Admin</span>
           <User className="w-6 h-6 text-gray-600 border p-1 rounded-full" />

@@ -1,52 +1,59 @@
-// app/controllers/customer_orders_controller.ts
+// app/controllers/customerOrdersController.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '#models/order'
 import OrderItem from '#models/order_item'
 import MenuItem from '#models/menu_item'
+import Session from '#models/session'
+import Kot from '#models/kot'
 
-export default class CostumersController {
-  /**
-   * Ambil order berdasarkan session token
-   */
+export default class CustomerOrdersController {
   public async show({ params, response }: HttpContext) {
     const { sessionToken } = params
 
-    const order = await Order.query()
-      .where('session_token', sessionToken)
-      .preload('items', (q) => q.preload('menuItem'))
-      .preload('table')
+    const session = await Session.query()
+      .where('sessionToken', sessionToken)
+      .preload('orders', (ordersQuery) =>
+        ordersQuery
+          .preload('items', (itemsQuery) => itemsQuery.preload('menuItem'))
+          .preload('table')
+          .preload('payment')
+      )
       .first()
 
-    if (!order) {
-      return response.status(404).json({ message: 'Session tidak ditemukan' })
+    if (!session) {
+      return response.status(404).json({ message: 'Session not found' })
     }
 
-    return {
-      order,
-    }
+    return { session }
   }
 
-  /**
-   * Tambah item ke order customer
-   */
   public async addItem({ params, request, response }: HttpContext) {
     const { sessionToken } = params
     const { menuItemId, qty } = request.only(['menuItemId', 'qty'])
 
-    const order = await Order.findBy('session_token', sessionToken)
-    if (!order) {
-      return response.status(404).json({ message: 'Session tidak valid' })
+    const session = await Session.query()
+      .where('sessionToken', sessionToken)
+      .preload('orders', async (o) => {
+        await o.preload('payment')
+      })
+      .firstOrFail()
+
+    let activeOrder = session.orders.find((order) => !order.payment?.id)
+
+    if (!activeOrder) {
+      return response.badRequest({
+        message: 'NO_ACTIVE_ORDER',
+        reason: 'All bills are paid. Need new bill.',
+      })
     }
 
     const menuItem = await MenuItem.find(menuItemId)
-    if (!menuItem) {
-      return response.status(404).json({ message: 'Menu item tidak ditemukan' })
-    }
+    if (!menuItem) return response.notFound({ message: 'Menu item not found' })
 
-    // cek apakah item sudah ada di order
     let orderItem = await OrderItem.query()
-      .where('order_id', order.id)
-      .where('menu_item_id', menuItemId)
+      .where('orderId', activeOrder.id)
+      .andWhere('status', 'cart')
+      .andWhere('menuItemId', menuItemId)
       .first()
 
     if (orderItem) {
@@ -54,105 +61,157 @@ export default class CostumersController {
       await orderItem.save()
     } else {
       orderItem = await OrderItem.create({
-        orderId: order.id,
+        orderId: activeOrder.id,
         menuItemId,
         quantity: qty,
         price: menuItem.price,
+        status: 'cart',
       })
     }
 
-    await this.recalculate(order.id)
+    await this.recalculate(activeOrder.id)
 
-    return {
-      message: 'Item ditambahkan',
-      item: orderItem,
-    }
+    return { message: 'Item added', item: orderItem, orderId: activeOrder.id }
   }
 
-  /**
-   * Update qty item customer
-   */
+  public async createNewBill({ params }: HttpContext) {
+    const { sessionToken } = params
+
+    const session = await Session.findByOrFail('sessionToken', sessionToken)
+
+    const newOrder = await Order.create({
+      sessionId: session.id,
+      tableId: session.tableId,
+      status: 'pending',
+      subtotal: 0,
+      tax: 0,
+      total: 0,
+    })
+
+    return { message: 'New bill created', order: newOrder }
+  }
+
   public async updateQty({ params, request, response }: HttpContext) {
     const { sessionToken } = params
     const { itemId, qty } = request.only(['itemId', 'qty'])
 
-    const order = await Order.findBy('session_token', sessionToken)
-    if (!order) {
-      return response.status(404).json({ message: 'Session tidak valid' })
-    }
+    const session = await Session.query()
+      .where('sessionToken', sessionToken)
+      .preload('orders', async (o) => {
+        await o.preload('payment')
+      })
+      .firstOrFail()
+
+    const activeOrder = session.orders.find((o) => !o.payment?.id)
+    if (!activeOrder) return response.notFound({ message: 'No active order' })
 
     const orderItem = await OrderItem.query()
       .where('id', itemId)
-      .where('order_id', order.id)
+      .where('orderId', activeOrder.id)
       .first()
 
-    if (!orderItem) {
-      return response.status(404).json({ message: 'Item tidak ditemukan' })
-    }
+    if (!orderItem) return response.notFound({ message: 'Order item not found' })
 
     orderItem.quantity = qty
     await orderItem.save()
+    await this.recalculate(activeOrder.id)
 
-    await this.recalculate(order.id)
-
-    return {
-      message: 'Quantity diperbarui',
-      item: orderItem,
-    }
+    return { message: 'Quantity updated', item: orderItem }
   }
 
-  /**
-   * Hapus item dalam order customer
-   */
   public async deleteItem({ params, request, response }: HttpContext) {
     const { sessionToken } = params
     const { itemId } = request.only(['itemId'])
 
-    const order = await Order.findBy('session_token', sessionToken)
-    if (!order) {
-      return response.status(404).json({ message: 'Session tidak valid' })
-    }
+    const session = await Session.query()
+      .where('sessionToken', sessionToken)
+      .preload('orders', async (o) => {
+        await o.preload('payment')
+      })
+      .firstOrFail()
+
+    const activeOrder = session.orders.find((o) => !o.payment?.id)
+    if (!activeOrder) return response.notFound({ message: 'No active order' })
 
     const orderItem = await OrderItem.query()
       .where('id', itemId)
-      .where('order_id', order.id)
+      .where('orderId', activeOrder.id)
       .first()
 
-    if (!orderItem) {
-      return response.status(404).json({ message: 'Item tidak ditemukan' })
-    }
+    if (!orderItem) return response.notFound({ message: 'Order item not found' })
 
     await orderItem.delete()
+    await this.recalculate(activeOrder.id)
 
-    await this.recalculate(order.id)
-
-    return { message: 'Item dihapus' }
+    return { message: 'Item deleted' }
   }
 
-  /**
-   * Customer submit order (checkout)
-   */
   public async submit({ params, response }: HttpContext) {
     const { sessionToken } = params
 
-    const order = await Order.findBy('session_token', sessionToken)
-    if (!order) {
-      return response.status(404).json({ message: 'Session tidak valid' })
-    }
+    const session = await Session.query()
+      .where('sessionToken', sessionToken)
+      .preload('orders')
+      .firstOrFail()
 
-    order.status = 'pending' // menunggu cashier
-    await order.save()
+    const activeOrder = session.orders.find((o) => o.status === 'pending')
+    if (!activeOrder) return response.notFound({ message: 'No order to submit' })
 
-    return { message: 'Order berhasil dikirim ke kasir', order }
+    activeOrder.status = 'pending'
+    await activeOrder.save()
+
+    return { message: 'Order sent to cashier', order: activeOrder }
   }
 
-  /**
-   * Recalculate subtotal, tax, total
-   */
-  private async recalculate(orderId: number) {
-    const items = await OrderItem.query().where('order_id', orderId)
+  public async placeOrder(ctx: HttpContext) {
+    const { sessionToken } = ctx.params
 
-    const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    const session = await Session.query()
+      .where('sessionToken', sessionToken)
+      .preload('orders', async (o) => {
+        await o.preload('payment')
+      })
+      .firstOrFail()
+
+    let activeOrder = session.orders.find((order) => !order.payment?.id)
+
+    const order = activeOrder
+
+    // Ambil semua item CART
+    let cartItems = await OrderItem.query()
+      .where('order_id', activeOrder!.id)
+      .andWhere('status', 'cart')
+
+    if (cartItems.length === 0) {
+      return { error: 'Cart kosong, tidak bisa order.' }
+    }
+
+    // Ubah status item → ordered
+    await OrderItem.query()
+      .where('order_id', activeOrder!.id)
+      .andWhere('status', 'cart')
+      .update({ status: 'ordered' })
+
+    // Update status order
+    order!.status = 'cooking'
+    await order!.save()
+
+    const kot: any = cartItems.map((i: any) => ({
+      orderId: Number(activeOrder!.id),
+      orderItemId: Number(i.id),
+      kotNumber: `ORD-${Date.now()}`,
+      section: 'kitchen',
+      status: 'sent',
+    }))
+    await Kot.createMany(kot)
+
+    return { status: true, message: 'Order dikirim ke dapur.' }
+  }
+
+  private async recalculate(orderId: number) {
+    const items = await OrderItem.query().where('orderId', orderId)
+
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
     const tax = subtotal * 0.1
     const total = subtotal + tax
 

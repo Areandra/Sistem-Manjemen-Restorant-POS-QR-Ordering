@@ -17,7 +17,6 @@ export default class extends BaseSchema {
       table.decimal('discount', 12, 2).defaultTo(0)
       table.decimal('total', 12, 2).defaultTo(0)
       table.text('notes').nullable()
-      table.integer('created_by').unsigned().references('id').inTable('users')
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
