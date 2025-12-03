@@ -46,7 +46,6 @@ export default class OrdersController {
           tax: 0,
           discount: 0,
           total: 0,
-          createdBy: ctx.auth.user!.id,
         })
         return ctx.response.redirect('/cashier/order')
 
@@ -63,6 +62,7 @@ export default class OrdersController {
       tableId,
       sessionToken: crypto.randomUUID(),
       isActive: true,
+      createdBy: ctx.auth.user!.id,
     })
 
     // Update table agar session aktif terikat
@@ -81,7 +81,6 @@ export default class OrdersController {
       tax: 0,
       discount: 0,
       total: 0,
-      createdBy: ctx.auth.user!.id,
     })
 
     return ctx.response.redirect('/cashier/order')
@@ -126,9 +125,10 @@ export default class OrdersController {
       .whereNot('status', 'completed')
       .preload('items', (q) => q.preload('menuItem'))
       .preload('table')
-      .preload('createdByUser')
       .preload('payment')
-      .preload('session')
+      .preload('session', async (s) => {
+        await s.preload('createdByUser')
+      })
       .first()
 
     return order

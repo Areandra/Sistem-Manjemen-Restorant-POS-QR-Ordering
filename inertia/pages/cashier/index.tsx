@@ -20,6 +20,7 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
         method: 'GET',
       })
       const order = await res.json()
+      console.log('order', order)
 
       setSelectedOrder(order)
     }
@@ -105,8 +106,13 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
     }
   }
 
+  const links = [
+    { label: 'Manajemen', href: '/menu' },
+    { label: 'Kitchen', href: '/kitchen/kot' },
+  ]
+
   return (
-    <CashierLayout>
+    <CashierLayout headerLinks={links}>
       <MenuCategoriesLayout sidebarItems={category} baseUrl="/cashier/order">
         <ActiveOrderPanel
           setSelectedOrderId={setSelectedOrderId}

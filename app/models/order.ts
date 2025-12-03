@@ -41,9 +41,6 @@ export default class Order extends BaseModel {
   @column()
   declare notes: string | null
 
-  @column()
-  declare createdBy: number
-
   @belongsTo(() => Session)
   declare session: BelongsTo<typeof Session>
 
@@ -55,9 +52,6 @@ export default class Order extends BaseModel {
 
   @hasOne(() => Payment)
   declare payment: HasOne<typeof Payment>
-
-  @belongsTo(() => User, { foreignKey: 'createdBy' })
-  declare createdByUser: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
