@@ -13,10 +13,10 @@ export default class extends BaseSchema {
       table.decimal('price', 12, 2)
       table.decimal('subtotal', 12, 2)
       table.text('notes').nullable()
-      table.enum('status', ['ordered', 'cooking', 'ready', 'delivered']).defaultTo('ordered')
+      table.enum('status', ['cart', 'ordered', 'cooking', 'ready', 'delivered']).defaultTo('cart')
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

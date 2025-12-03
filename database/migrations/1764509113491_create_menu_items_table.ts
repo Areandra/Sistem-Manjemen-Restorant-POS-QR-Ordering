@@ -16,8 +16,8 @@ export default class extends BaseSchema {
       table.boolean('is_available').defaultTo(true)
       table.string('sku').nullable()
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

@@ -13,8 +13,8 @@ export default class extends BaseSchema {
       table.timestamp('ended_at').nullable()
       table.boolean('is_active').defaultTo(true)
 
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

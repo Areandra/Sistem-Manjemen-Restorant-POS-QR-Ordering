@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import Table from './table.js'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Order from './order.js'
 
 export default class Session extends BaseModel {
   @column({ isPrimary: true })
@@ -24,6 +25,9 @@ export default class Session extends BaseModel {
 
   @belongsTo(() => Table)
   declare table: BelongsTo<typeof Table>
+
+  @hasMany(() => Order)
+  declare order: HasMany<typeof Order>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

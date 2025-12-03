@@ -11,6 +11,9 @@ export default class Table extends BaseModel {
   declare tableNumber: string
 
   @column()
+  declare capacity: number
+
+  @column()
   declare qrCode: string
 
   @column()

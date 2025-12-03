@@ -16,7 +16,7 @@ export default class MenuCategory extends BaseModel {
   @column()
   declare sortOrder: number
 
-  @hasMany(() => MenuItem)
+  @hasMany(() => MenuItem, { foreignKey: 'categoryId' })
   declare items: HasMany<typeof MenuItem>
 
   @column.dateTime({ autoCreate: true })

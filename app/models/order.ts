@@ -1,8 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
 import Table from './table.js'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany, HasOne } from '@adonisjs/lucid/types/relations'
 import OrderItem from './order_item.js'
+import User from './user.js'
+import Payment from './payment.js'
+import Session from './session.js'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
@@ -10,6 +13,9 @@ export default class Order extends BaseModel {
 
   @column()
   declare tableId: number
+
+  @column()
+  declare sessionId: number
 
   @column()
   declare orderCode: string
@@ -38,11 +44,20 @@ export default class Order extends BaseModel {
   @column()
   declare createdBy: number
 
+  @belongsTo(() => Session)
+  declare session: BelongsTo<typeof Session>
+
   @belongsTo(() => Table)
   declare table: BelongsTo<typeof Table>
 
   @hasMany(() => OrderItem)
   declare items: HasMany<typeof OrderItem>
+
+  @hasOne(() => Payment)
+  declare payment: HasOne<typeof Payment>
+
+  @belongsTo(() => User, { foreignKey: 'createdBy' })
+  declare createdByUser: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
