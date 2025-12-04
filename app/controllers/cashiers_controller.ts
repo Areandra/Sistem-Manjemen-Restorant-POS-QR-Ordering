@@ -24,7 +24,14 @@ export default class CashiersController {
 
   async showByCategories(ctx: HttpContext) {
     const id = ctx.params.id
-    const orders = await Order.query().preload('table')
+    const orders = await Order.query()
+      .preload('table')
+      .whereHas('session', (q) => {
+        q.where('isActive', 1)
+      })
+      .preload('session', (q) => {
+        q.where('isActive', 1)
+      })
 
     const data = await MenuCategory.findOrFail(id)
     await data.load('items')
