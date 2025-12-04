@@ -12,13 +12,17 @@ export default class OrdersController {
   public async start(ctx: HttpContext) {
     if (ctx.request.method() === 'GET') {
       const data = await Table.query()
-        .whereHas('session', (q) => {
+        .where((query) => {
+          query.whereNull('currentSessionId').orWhereHas('session', (q) => {
+            q.where('isActive', 1)
+          })
+        })
+        .preload('session', (q) => {
           q.where('isActive', 1)
         })
         .preload('orders', async (q) => {
           await q.preload('payment')
         })
-        .preload('session')
 
       return ctx.inertia.render('cashier/start', { data })
     }
@@ -89,6 +93,12 @@ export default class OrdersController {
     const session = await Session.findBy('sessionToken', params.sessionToken)
 
     if (session) {
+      const table = await Table.findBy('currentSessionId', session.id)
+
+      table!.currentSessionId = null
+
+      await table!.save()
+
       session.isActive = false
       await session.save()
     }
