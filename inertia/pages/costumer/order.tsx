@@ -14,13 +14,16 @@ export default function ActiveOrderPage({ data }: any) {
 
   return (
     <CustomerOrderLayout sessionToken={session.sessionToken}>
-      <div className="max-w-xl mx-auto px-4 pb-20">
-        <h1 className="p-6 text-2xl font-bold text-gray-800 border-b mb-4">Pesanan Aktif</h1>
+      <div className="max-w-xl mx-auto pb-20">
+        <h1 className="p-3 text-xl font-bold text-gray-800 border-b mb-4">Pesanan Aktif</h1>
 
         <div className="bg-white border border-gray-200 p-4 rounded-lg mb-6">
           <h2 className="text-xl font-semibold text-gray-800">Meja: {session.table.tableNumber}</h2>
           <p className="text-gray-600 text-sm mt-1">
             Session: <span className="font-mono">{session.sessionToken}</span>
+          </p>
+          <p className="text-gray-600 text-sm mt-1">
+            <span className="font-mono">{new Date(session.createdAt).toLocaleString('id-ID')}</span>
           </p>
         </div>
 
@@ -35,7 +38,7 @@ export default function ActiveOrderPage({ data }: any) {
               className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
             >
               <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg font-bold text-gray-800">Order #{order.orderCode}</h2>
+                <h2 className="text-sm font-bold text-gray-800">Order #{order.orderCode}</h2>
 
                 <span
                   className="px-3 py-1 rounded-full text-xs font-semibold text-white capitalize"
@@ -54,14 +57,6 @@ export default function ActiveOrderPage({ data }: any) {
                 </span>
               </div>
 
-              <div className="text-sm text-gray-700 space-y-1 mb-3">
-                <p>Subtotal: {formatRp(order.subtotal)}</p>
-                <p>Pajak: {formatRp(order.tax)}</p>
-                <p className="font-bold text-lg" style={{ color: COLOR_ACCENT }}>
-                  Total: {formatRp(order.total)}
-                </p>
-              </div>
-
               <div className="space-y-3">
                 {order.items.map((i: any) => (
                   <div
@@ -70,7 +65,7 @@ export default function ActiveOrderPage({ data }: any) {
                   >
                     <img
                       src={i.menuItem.imageUrl ?? 'https://source.unsplash.com/300x200/?meal'}
-                      className="w-20 h-20 rounded-md object-cover flex-shrink-0"
+                      className="w-20 rounded-md object-cover flex-shrink-0"
                     />
 
                     <div className="flex-1">
@@ -103,6 +98,14 @@ export default function ActiveOrderPage({ data }: any) {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              <div className="text-sm text-gray-700 space-y-1 mt-3">
+                <p>Subtotal: {formatRp(order.subtotal)}</p>
+                <p>Pajak: {formatRp(order.tax)}</p>
+                <p className="font-bold text-lg" style={{ color: COLOR_ACCENT }}>
+                  Total: {formatRp(order.total)}
+                </p>
               </div>
 
               {order.payment && (
