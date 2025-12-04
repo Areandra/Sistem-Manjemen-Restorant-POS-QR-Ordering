@@ -4,14 +4,29 @@ Sistem Manajemen Restoran modern yang dirancang untuk mempermudah operasional re
 
 ---
 
+![Node.js](https://img.shields.io/badge/Node.js-20+-green)
+![npm](https://img.shields.io/badge/npm-10+-blue)
+![AdonisJS](https://img.shields.io/badge/AdonisJS-6-%236E4AFF)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![InertiaJS](https://img.shields.io/badge/InertiaJS-React-purple)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-%233178C6)
+![Vite](https://img.shields.io/badge/Vite-6-yellow)
+![MySQL](https://img.shields.io/badge/Database-MySQL%2FMariaDB-blue)
+![QRCode](https://img.shields.io/badge/QR_Code-qrcode-green)
+![ChartJS](https://img.shields.io/badge/Chart-ChartJS-orange)
+![MariaDB](https://img.shields.io/badge/MariaDB-10.4+-orange)
+![License](https://img.shields.io/badge/license-MIT-red)
+
+---
+
 ## ⚙️ Kebutuhan Lingkungan & Tools
 
 ### System Requirements (Digunakan Di Project)
 
 - **Node.js:**  
-  Versi **≥ 20.x** _(direkomendasikan LTS, contoh stabil: 20.11.0 atau di atasnya, dan telah berhasil pada 20.14.x)_  
+  Versi **≥ 20.x** _(direkomendasikan LTS, contoh stabil: 20.11.0 atau di atasnya, dan telah berhasil pada 24.11.0)_  
 - **npm:**  
-  Mengikuti Node.js (LTS).
+  Mengikuti Node.js _(direkomendasikan LT,S telah berhasil pada 11.6.4)_.
 - **MySQL/MariaDB:**  
   Direkomendasikan versi **MariaDB 10.4.32+** atau **MySQL 8.x**.  
   _(Project telah diuji berjalan lancar di MariaDB 10.4.32, namun kompatibilitas dengan MySQL 8 ke atas juga baik untuk fitur JSON & integritas data)_
@@ -146,10 +161,12 @@ node ace app:admin create
 
 ### Alur Penggunaan
 1. **Admin setup** data restoran: meja, kategori, menu, dan user lain.
-2. **Pelanggan datang**, scan QR SESSION, akses menu, pesan secara mandiri.
-3. **Order masuk** ke kasir & dapur secara realtime.
-4. **Kasir** konfirmasi, proses pembayaran, close sesi_order.
-5. **Kitchen** update status pesanan (masak-saji-selesai).
+2. **Kasir** Open Session dari meje kosong
+3. **Pelanggan datang**, scan QR SESSION, akses menu, pesan secara mandiri.
+4. **Kasir**, Pemesanan dapat di lakukan di kasir juga
+5. **Order masuk** ke kasir & dapur secara realtime.
+6. **Kasir** konfirmasi, proses pembayaran, close sesi_order.
+7. **Kitchen** update status pesanan (masak-saji-selesai).
 
 ### Fitur Lengkap:
 - CLI Admin: buat/reset password/destroy
@@ -163,10 +180,19 @@ node ace app:admin create
 
 ---
 
+### Developer Commands
+- `npm run dev` → Jalankan server development
+- `npm run build` → Build produksi
+- `npm run lint` → Cek style code
+- `npm run test` → Jalankan unit test
+- `npm run typecheck` → TypeScript check
+
+---
+
 ## Kontribusi & Lisensi
 
 Silakan fork/pull request/issue untuk kontribusi.  
-Lisensi: [UNLICENSED] (cek file LICENSE).
+Lisensi: [MIT].
 
 ---
 
