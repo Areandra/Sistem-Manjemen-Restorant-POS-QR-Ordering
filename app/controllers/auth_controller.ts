@@ -10,7 +10,7 @@ export default class AuthController {
 
     await ctx.auth.use('web').login(user)
 
-    switch (ctx.auth.user?.role) {
+    switch (user.role) {
       case 'admin':
         return ctx.response.redirect('/')
       case 'cashier':
@@ -18,7 +18,7 @@ export default class AuthController {
       case 'kitchen':
         return ctx.response.redirect('/kitchen')
       default:
-        await ctx.auth.user?.delete()
+        await user.delete()
         return ctx.response.redirect('/login')
     }
   }
