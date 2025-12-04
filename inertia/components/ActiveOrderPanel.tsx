@@ -44,6 +44,11 @@ export default function ActiveOrderPanel({
                 </div>
 
                 <p className="mt-1 text-sm text-gray-700">
+                  <span className="font-medium">
+                    {new Date(order.createdAt).toLocaleString('id-ID')}
+                  </span>
+                </p>
+                <p className="mt-1 text-sm text-gray-400">
                   <span className="font-medium">{order.orderCode}</span>
                 </p>
               </div>

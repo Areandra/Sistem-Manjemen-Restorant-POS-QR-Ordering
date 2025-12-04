@@ -6,63 +6,46 @@ interface TableListProps {
   tables: Table[]
 }
 
+const COLOR_AVAILABLE = '#27AE60'
+const COLOR_UNAVAILABLE = '#E74C3C'
+
 const TableList: React.FC<TableListProps> = ({ tables }) => {
   return (
-    <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              ID
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Nomor Meja
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Kapasitas
-            </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Aksi
-            </th>
-          </tr>
-        </thead>
+    <div className="space-y-4">
+      {tables?.map((table) => (
+        <div
+          key={table.id}
+          className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex justify-between items-center"
+        >
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800">Meja {table.tableNumber}</h3>
+            <p className="text-sm text-gray-600">Kapasitas: {table.capacity} orang</p>
+            <span
+              className="inline-block mt-1 px-2 py-1 rounded-full text-xs font-bold text-white"
+              style={{
+                backgroundColor: table.capacity > 0 ? COLOR_AVAILABLE : COLOR_UNAVAILABLE,
+              }}
+            >
+              {table.capacity > 0 ? 'Tersedia' : 'Tidak Tersedia'}
+            </span>
+          </div>
 
-        <tbody className="bg-white divide-y divide-gray-200">
-          {tables?.map((table) => (
-            <tr key={table.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {table.id}
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {table.tableNumber}
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {table.capacity} orang
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                <button
-                  onClick={() => router.get(`/table/update/${table.id}`)}
-                  className="text-gray-400 hover:text-gray-700 mx-1"
-                  aria-label="Edit"
-                >
-                  ✏️
-                </button>
-
-                <button
-                  onClick={() => router.delete(`/table/delete/${table.id}`)}
-                  className="text-gray-400 hover:text-red-600 mx-1"
-                  aria-label="Hapus"
-                >
-                  🗑️
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <div className="flex gap-2">
+            <button
+              onClick={() => router.get(`/table/update/${table.id}`)}
+              className="px-3 py-1 rounded-md bg-[#F39C12] text-white text-sm font-semibold hover:bg-[#d68910] transition"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => router.delete(`/table/delete/${table.id}`)}
+              className="px-3 py-1 rounded-md bg-[#E74C3C] text-white text-sm font-semibold hover:bg-[#c0392b] transition"
+            >
+              Hapus
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

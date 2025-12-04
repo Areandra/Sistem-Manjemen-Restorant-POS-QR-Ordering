@@ -1,9 +1,5 @@
 import { Link, usePage } from '@inertiajs/react'
-import {
-  Menu,
-  ShoppingCart,
-  ClipboardList,
-} from 'lucide-react'
+import { Menu, ShoppingCart, ClipboardList } from 'lucide-react'
 
 export default function CustomerOrderLayout({ children, sessionToken }: any) {
   const { url } = usePage()
@@ -32,7 +28,7 @@ export default function CustomerOrderLayout({ children, sessionToken }: any) {
   return (
     <div className="flex min-h-screen font-sans pb-16">
       <div className="w-full h-full">
-        <div className="w-full h-full">{children}</div>
+        <div className="max-w-xl mx-auto px-4 ">{children}</div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-2xl border-t border-gray-100">
         <nav className="flex h-16 max-w-lg mx-auto justify-around items-center">
@@ -46,11 +42,7 @@ export default function CustomerOrderLayout({ children, sessionToken }: any) {
                 key={i}
                 href={n.href}
                 className={`flex flex-col items-center justify-center p-2 text-sm font-medium transition-colors duration-200
-                  ${
-                    isActive
-                      ? 'text-orange-600'
-                      : 'text-gray-500 hover:text-orange-500'
-                  }
+                  ${isActive ? 'text-orange-600' : 'text-gray-500 hover:text-orange-500'}
                 `}
               >
                 <IconComponent className="w-6 h-6" />

@@ -30,10 +30,10 @@ export default function MenuCategoriesTopLayout({
   }
 
   return (
-    <div className="max-w-xl mx-auto pb-20 space-y-6 bg-gray-50 flex flex-col">
-      <div className="w-full bg-white border-b border-gray-200 px-4 py-3 shadow-sm sticky top-0 z-10">
+    <div className="space-y-6 bg-gray-50 flex flex-col min-h-screen">
+      <div className="w-full bg-white border-b border-gray-200 px-4 py-3 shadow-sm sticky top-0 z-20">
         <div className="flex items-center justify-between mb-2">
-          <span className="font-bold text-lg text-gray-800">Kategori</span>
+          <span className="font-bold text-lg text-gray-900">Kategori</span>
         </div>
 
         <div className="flex gap-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent pb-2">
@@ -44,11 +44,10 @@ export default function MenuCategoriesTopLayout({
                 <Link
                   href={getCategoryUrl(item)}
                   className={`
-                    whitespace-nowrap px-4 py-2 rounded-full border transition text-sm flex items-center
-                    ${
+                    whitespace-nowrap px-4 py-2 rounded flex items-center font-bold text-s transition-colors duration-150 ${
                       isActive(item)
-                        ? 'bg-[#F39C12] text-white border-[#F39C12] shadow-md'
-                        : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
+                        ? 'bg-[#E74C3C] text-white border-[#F39C12] shadow-md'
+                        : 'bg-gray-100 text-gray-800 border-gray-300 hover:bg-[#FDE8C2]'
                     }
                   `}
                 >
@@ -57,7 +56,7 @@ export default function MenuCategoriesTopLayout({
 
                 {item.id !== -1 && baseUrl === '/menu' && (
                   <div className="ml-2 relative">
-                    <button className="p-1 rounded hover:bg-gray-200">
+                    <button className="p-1 hover:bg-gray-200">
                       <MoreHorizontal className="w-5 h-5 text-gray-600" />
                     </button>
                   </div>
@@ -67,7 +66,8 @@ export default function MenuCategoriesTopLayout({
         </div>
       </div>
 
-      <main className="flex-1 max-w-xl mx-auto px-4 py-4">{children}</main>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 bg-gray-50">{children}</main>
     </div>
   )
 }
