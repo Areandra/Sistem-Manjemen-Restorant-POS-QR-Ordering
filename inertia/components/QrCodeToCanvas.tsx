@@ -40,7 +40,7 @@ export default function QRCodeToCanvas({
 
     QRCode.toCanvas(
       canvas,
-      `https://6a3af013f352.ngrok-free.app/order/session/${value}`,
+      `${window.location.host}/order/session/${value}`,
       options,
       (err) => {
         if (err) console.error(err)

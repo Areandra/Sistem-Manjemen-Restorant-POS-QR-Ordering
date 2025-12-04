@@ -36,7 +36,7 @@ export default function MenuCategoriesLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      <aside className="w-80 bg-white flex-shrink-0 h-screen flex flex-col">
+      <aside className={`w-${baseUrl === '/menu' ? 80 : 60} bg-white flex-shrink-0 h-screen flex flex-col`}>
         <div className="p-4 flex items-center h-16 border-b border-gray-300 justify-between">
           <span className="font-bold text-lg text-black-300">Categories</span>
           {baseUrl === '/menu' && (
