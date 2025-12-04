@@ -5,13 +5,14 @@ export default class RoleBasedAcssesMiddleware {
   async handle(ctx: HttpContext, next: NextFn, allowedRoles?: string[]) {
     const user = ctx.auth.user
 
-    if (!user) return ctx.response.unauthorized({ message: 'Unauthorized' })
-    console.log(ctx)
+    if (!user) {
+      return ctx.response.redirect('/login')
+    }
 
-    if (allowedRoles && !allowedRoles.includes(user.role))
-      return ctx.response.forbidden({ messege: 'Forbidden' })
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+      return ctx.response.redirect('/forbidden')
+    }
 
-    const output = await next()
-    return output
+    return next()
   }
 }
