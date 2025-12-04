@@ -210,7 +210,7 @@ export default class CustomerOrdersController {
   private async recalculate(orderId: number) {
     const items = await OrderItem.query().where('orderId', orderId)
 
-    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    const subtotal = items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0)
     const tax = subtotal * 0.1
     const total = subtotal + tax
 
