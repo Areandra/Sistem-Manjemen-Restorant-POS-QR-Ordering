@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import { useState, useMemo } from 'react'
 import CashierLayout from '~/layout/CashierLayout'
 import MenuCategoriesLayout from '~/layout/MenuCategories'
@@ -46,12 +46,10 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
   const [viewMode, setViewMode] = useState<'active' | 'completed'>('active')
   const [groupMode, setGroupMode] = useState<'flat' | 'table'>('flat')
 
-  // FILTER ACTIVE / COMPLETED
   const filteredKots = kots.filter((k) =>
     viewMode === 'active' ? k.status !== 'done' : k.status === 'done'
   )
 
-  // GROUP BY TABLE
   const groupByOrder = useMemo(() => {
     const map = new Map<number, KotPayload[]>()
 
@@ -63,8 +61,6 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
 
     return map
   }, [filteredKots])
-
-  // ================= API =================
 
   const updateItemStatus = async (id: number, current: string) => {
     const newStatus = nextOrderItemStatus(current)
@@ -95,8 +91,6 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
 
   const getFloor = (tn?: string) => (tn?.includes('A') ? 'First Floor' : 'Ground Floor')
 
-  // ================ RENDER CARD =================
-
   const RenderKotCard = (kot: KotPayload) => {
     if (!kot?.orderItem) return <></>
     return (
@@ -104,7 +98,6 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
         key={kot.id}
         className="min-w-[280px] w-[280px] bg-white border border-gray-200 rounded-xl p-4 shadow-md flex flex-col"
       >
-        {/* HEADER */}
         <div className="flex justify-between text-sm mb-1 items-start">
           <span className="font-bold text-[#5B4636]">KOT #{kot.id}</span>
 
@@ -116,12 +109,10 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
           </span>
         </div>
 
-        {/* TABLE */}
         <p className="text-xs text-gray-500 mb-3 font-medium">
           {getFloor(kot?.order?.table?.tableNumber)} • {kot?.order?.table?.tableNumber ?? 'N/A'}
         </p>
 
-        {/* ITEM */}
         <div className="mb-4 pb-2 border-b border-dashed border-gray-200">
           <div className="flex justify-between">
             <p className="text-sm font-medium text-gray-800">{kot?.orderItem?.menuItem?.name}</p>
@@ -136,26 +127,22 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
             ))}
         </div>
 
-        {/* ORDER ITEM SINGLE BUTTON */}
         <button
           onClick={() => updateItemStatus(kot.orderItem?.id, kot.orderItem?.status)}
-          className="bg-yellow-300 py-2 rounded text-xs font-bold mb-2"
+          className="bg-[#E74C3C] text-white py-2 rounded-md text-xs font-bold mb-2 transition-colors duration-150 hover:bg-[#c0392b]"
         >
           Next Item: {nextOrderItemStatus(kot.orderItem?.status)}
         </button>
 
-        {/* KOT SINGLE BUTTON */}
         <button
           onClick={() => updateKotStatus(kot.id, kot.status)}
-          className="bg-blue-300 py-2 rounded text-xs font-bold"
+          className="bg-[#F39C12] text-gray-800 py-2 rounded-md text-xs font-bold transition-colors duration-150 hover:bg-[#e67e22]"
         >
           Next KOT: {nextKotStatus(kot.status)}
         </button>
       </div>
     )
   }
-
-  // ================= RENDER MAIN =================
 
   const links = [
     { label: 'Manajemen', href: '/menu' },
@@ -165,16 +152,18 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
   return (
     <CashierLayout headerLinks={links}>
       <MenuCategoriesLayout sidebarItems={category} baseUrl="/kitchen/kot">
-        <div className="w-full p-4 bg-[#F8F5F0] min-h-screen">
-          {/* TOP BAR */}
+        <Head title="Kitchen" />
+        <div className="w-full p-4 min-h-screen">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-semibold text-[#5B4636]">KOT</h1>
 
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode('active')}
-                className={`px-3 py-1 rounded-full text-sm ${
-                  viewMode === 'active' ? 'bg-[#C28D47] text-white' : 'bg-gray-300 text-gray-700'
+                className={`px-3 py-1 rounded-md text-sm transition-colors duration-150 ${
+                  viewMode === 'active'
+                    ? 'bg-[#F7DC6F] text-[#A0522D] font-bold' // Warna Aktif: Krem ke Coklat
+                    : 'bg-gray-300 text-gray-700'
                 }`}
               >
                 Active
@@ -182,8 +171,10 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
 
               <button
                 onClick={() => setViewMode('completed')}
-                className={`px-3 py-1 rounded-full text-sm ${
-                  viewMode === 'completed' ? 'bg-[#C28D47] text-white' : 'bg-gray-300 text-gray-700'
+                className={`px-3 py-1 rounded-md text-sm transition-colors duration-150 ${
+                  viewMode === 'completed'
+                    ? 'bg-[#F7DC6F] text-[#A0522D] font-bold' // Warna Aktif: Krem ke Coklat
+                    : 'bg-gray-300 text-gray-700'
                 }`}
               >
                 Completed
@@ -191,36 +182,38 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
 
               <button
                 onClick={() => setGroupMode(groupMode === 'flat' ? 'table' : 'flat')}
-                className="px-3 py-1 rounded-full bg-gray-700 text-white text-sm"
+                className="px-3 py-1 rounded-md bg-[#A0522D] text-white text-sm transition-colors duration-150 hover:bg-[#8d4828]"
               >
                 {groupMode === 'flat' ? 'Group by Table' : 'Flat Mode'}
               </button>
             </div>
           </div>
 
-          {/* CONTENT */}
-          <div className="flex gap-4 overflow-x-auto pb-4">
-            {/* FLAT MODE */}
-            {groupMode === 'flat' && filteredKots.map((k) => <RenderKotCard key={k.id} {...k} />)}
+          <div className='flex justify-center'>
+            <div className="grid grid-cols-1 md:grid-cols-2 l:grid-cols-2 xl:grid-cols-5 gap-8">
+              {groupMode === 'flat' && filteredKots.map((k) => <RenderKotCard key={k.id} {...k} />)}
 
-            {/* GROUP BY ORDER */}
-            {groupMode === 'table' &&
-              Array.from(groupByOrder.entries()).map(([orderId, items]) => (
-                <div key={orderId} className="bg-white border rounded-xl p-4 shadow min-w-[320px]">
-                  <h2 className="font-bold text-lg text-[#5B4636] mb-2">
-                    Order #{orderId} • {items[0]?.order?.table?.tableNumber ?? 'N/A'} • Status:{' '}
-                    {items[0]?.order?.status}
-                  </h2>
+              {groupMode === 'table' &&
+                Array.from(groupByOrder.entries()).map(([orderId, items]) => (
+                  <div
+                    key={orderId}
+                    className="bg-white border rounded-xl p-4 shadow min-w-[320px]"
+                  >
+                    <h2 className="font-bold text-lg text-[#5B4636] mb-2">
+                      Order #{orderId} • {items[0]?.order?.table?.tableNumber ?? 'N/A'} • Status:{' '}
+                      {items[0]?.order?.status}
+                    </h2>
 
-                  <div className="space-y-3">
-                    {items.map((k) => (
-                      <RenderKotCard key={k.id} {...k} />
-                    ))}
+                    <div className="space-y-3">
+                      {items.map((k) => (
+                        <RenderKotCard key={k.id} {...k} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-            <div className="min-w-[40px]" />
+              <div className="min-w-[40px]" />
+            </div>
           </div>
         </div>
       </MenuCategoriesLayout>

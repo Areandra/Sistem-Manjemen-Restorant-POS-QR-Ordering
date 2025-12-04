@@ -68,5 +68,3 @@ const TableList: React.FC<TableListProps> = ({ tables }) => {
 }
 
 export default TableList
-
-

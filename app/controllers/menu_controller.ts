@@ -7,11 +7,6 @@ export default class MenuController {
     const data = await MenuItem.query()
     const category = await MenuCategory.query()
 
-    // return {
-    //   data,
-    //   category,
-    // }
-
     return ctx.inertia.render('menu/index', {
       data,
       category,

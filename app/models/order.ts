@@ -3,7 +3,6 @@ import { BaseModel, belongsTo, column, hasMany, hasOne } from '@adonisjs/lucid/o
 import Table from './table.js'
 import type { BelongsTo, HasMany, HasOne } from '@adonisjs/lucid/types/relations'
 import OrderItem from './order_item.js'
-import User from './user.js'
 import Payment from './payment.js'
 import Session from './session.js'
 

@@ -3,8 +3,6 @@ import MenuItemList from '~/components/MenuList'
 import AdminLayout from '~/layout/AdminLayout'
 import MenuCategories from '~/layout/MenuCategories'
 
-// Definisi Tipe Data MenuItem (Berdasarkan Model Lucid AdonisJS Anda)
-// Mengubah properti DateTime menjadi string/DateTime yang fleksibel untuk data Inertia
 export interface MenuItem {
   id: number
   categoryId: number
@@ -17,12 +15,9 @@ export interface MenuItem {
   sku: string | null
 }
 
-// Definisi Tipe Data untuk Data yang Dipaginasi
-
-// Prop untuk Halaman Index
 interface MenuItemsIndexProps {
-  category: any // Sidebar categories
-  data: MenuItem[] // Menggunakan tipe data MenuItems
+  category: any
+  data: MenuItem[]
 }
 
 const MenuItemsIndex = ({ category = [], data = [] }: MenuItemsIndexProps) => {
@@ -30,20 +25,18 @@ const MenuItemsIndex = ({ category = [], data = [] }: MenuItemsIndexProps) => {
     <AdminLayout overflow={'hidden'}>
       <Head title="Item Menu" />
       <MenuCategories sidebarItems={category}>
-        {/* Konten Halaman */}
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Manajemen Item Menu</h2>
 
             <Link
-              href="/menu/create" // Sesuaikan URL
+              href="/menu/create"
               className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded flex items-center"
             >
               <span className="mr-2">+</span> Item Menu Baru
             </Link>
           </div>
 
-          {/* Search Bar */}
           <div className="mb-6">
             <input
               type="text"
@@ -52,7 +45,6 @@ const MenuItemsIndex = ({ category = [], data = [] }: MenuItemsIndexProps) => {
             />
           </div>
 
-          {/* Komponen Daftar Item Menu */}
           <MenuItemList menuItems={data} />
         </div>
       </MenuCategories>

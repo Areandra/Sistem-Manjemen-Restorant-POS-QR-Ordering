@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import Order from './order.js'
+import Session from './session.js'
 
 export default class Table extends BaseModel {
   @column({ isPrimary: true })
@@ -24,6 +25,9 @@ export default class Table extends BaseModel {
 
   @hasMany(() => Order)
   declare orders: HasMany<typeof Order>
+
+  @hasMany(() => Session)
+  declare session: HasMany<typeof Session>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

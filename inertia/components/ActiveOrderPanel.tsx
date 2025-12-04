@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react'
 
-// ActiveOrderPanel.tsx
 export default function ActiveOrderPanel({
   orderDetail,
   orders,
@@ -9,12 +8,10 @@ export default function ActiveOrderPanel({
 }: any) {
   return (
     <div className="flex min-h-screen">
-      {/* Kolom 1: Konten Utama (Grid Menu) - Mengisi ruang yang tersedia */}
       <main className="flex-grow min-w-0">{children}</main>
 
       {orderDetail}
 
-      {/* Kolom 3: Daftar Order Aktif - Fixed width (w-80) dan menyusut */}
       <aside className="border-l bg-white shadow-lg flex flex-col p-4 flex-shrink-0">
         <h2 className="font-semibold mb-4 text-lg">Order Aktif</h2>
 

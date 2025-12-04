@@ -133,7 +133,7 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
             <input
               type="text"
               placeholder="Search menu..."
-              className="w-full p-2 border rounded mb-4"
+              className="w-full p-2 border rounded-md mb-4"
               onChange={(e) => setSearch(e.target.value)}
             />
 
@@ -143,14 +143,14 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
                 .map((item: any) => (
                   <div
                     key={item.id}
-                    className="border rounded-lg p-2 cursor-pointer hover:shadow-lg flex flex-col"
+                    className="border rounded-lg p-2 cursor-pointer hover:shadow-lg flex flex-col transition duration-150 bg-white"
                   >
                     <img src={item.imageUrl} className="w-full h-32 object-cover rounded" />
                     <h3 className="mt-2 font-medium">{item.name}</h3>
                     <p className="text-gray-600">Rp{item.price}</p>
                     <button
                       onClick={() => addMenuItem(item.id)}
-                      className="mt-2 bg-blue-500 text-white rounded py-1 hover:bg-blue-600"
+                      className="mt-2 bg-[#E74C3C] text-white rounded-md py-1 font-semibold transition-colors duration-150 hover:bg-[#F39C12] hover:text-gray-800"
                     >
                       Tambah
                     </button>

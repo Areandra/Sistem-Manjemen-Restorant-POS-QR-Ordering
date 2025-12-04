@@ -10,7 +10,7 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
   const [receiptData, setReceiptData] = useState<any>(null)
   const [showQR, setShowQR] = useState(false)
 
-  const isPaid = !!order.payment // ⬅️ CEK STATUS PEMBAYARAN
+  const isPaid = !!order.payment
 
   const STATUS_LIST = ['cart', 'ordered', 'cooking', 'ready', 'delivered'] as const
 
@@ -30,7 +30,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
 
     return (
       <div className="mb-4">
-        {/* SECTION TITLE */}
         <div className="flex justify-between items-start mb-2">
           <span
             className={`px-2 py-1 bg-${color}-100 text-${color}-700 rounded capitalize font-medium`}
@@ -39,7 +38,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
           </span>
         </div>
 
-        {/* ITEMS */}
         {list.map((item: any) => (
           <div key={item.id} className="flex-column p-3 rounded border shadow-sm mb-2">
             <div className="flex justify-between items-center bg-white">
@@ -52,7 +50,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
               <span className="font-semibold">{formatRp(item.quantity * item.price)}</span>
             </div>
 
-            {/* Edit hanya untuk CART dan jika belum dibayar */}
             {status === 'cart' && !isPaid && (
               <div className="flex row space-x-3 h-7 mt-4">
                 <button
@@ -94,12 +91,10 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
       <aside className="w-80 h-screen border-l bg-white flex flex-col shadow-xl z-50 flex-shrink-0 pb-16">
         <h2 className="font-semibold p-4 border-b text-lg">Order Details</h2>
 
-        {/* TABLE INFO */}
         <div className="p-4 border-b bg-gray-50">
           <p className="font-semibold text-gray-800">Meja: {table?.tableNumber}</p>
           <p className="text-gray-600 text-sm">Kapasitas: {table?.capacity}</p>
 
-          {/* STATUS PAID */}
           <p className="text-gray-600 text-sm capitalize">
             Status:{' '}
             {isPaid ? (
@@ -118,7 +113,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
           </p>
         </div>
 
-        {/* ITEMS */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {items.length === 0 ? (
             <p className="text-gray-500 text-sm">Belum ada item.</p>
@@ -131,7 +125,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
           )}
         </div>
 
-        {/* TOTAL & PAY BUTTON */}
         <div className="p-4 border-t bg-white">
           <div className="flex justify-between mb-1 text-sm">
             <span>Subtotal</span>
@@ -162,7 +155,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
             QR Code
           </button>
 
-          {/* Tombol Order tetap muncul */}
           <button
             onClick={() => orderAll(order.id)}
             className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold mb-3"
@@ -171,7 +163,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
             Order
           </button>
 
-          {/* Tombol Bayar hanya muncul jika BELUM dibayar */}
           {!isPaid && (
             <button
               onClick={() => setShowPayment(true)}
@@ -181,7 +172,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
             </button>
           )}
 
-          {/* Jika sudah bayar, tampilkan info */}
           {isPaid && (
             <div className="w-full text-center py-2 rounded-lg font-semibold text-green-700 border border-green-600">
               Sudah Dibayar
@@ -214,11 +204,9 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
           <div className="bg-white p-5 rounded-lg shadow-lg w-80">
             <h3 className="text-lg font-semibold mb-4 text-center">Session QR Code</h3>
 
-            {/* === INFORMASI YANG NAMPAK DI FRONTEND === */}
             <div className="text-sm text-gray-700 mb-4">
               <p>
-                <span className="font-semibold">Meja:</span>{' '}
-                {`Meja ${table?.tableNumber}`}
+                <span className="font-semibold">Meja:</span> {`Meja ${table?.tableNumber}`}
               </p>
               <p>
                 <span className="font-semibold">Session Token:</span> {order.session.sessionToken}
@@ -229,7 +217,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
               </p>
             </div>
 
-            {/* QR CODE */}
             <QRCodeToCanvas
               value={order.session.sessionToken}
               size={220}
@@ -238,7 +225,6 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
               className="mx-auto"
             />
 
-            {/* === BUTTON PRINT === */}
             <button
               onClick={() => {
                 const printWindow = window.open('', '', 'width=350,height=500')

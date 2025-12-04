@@ -1,4 +1,3 @@
-// app/controllers/order_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import Table from '#models/table'
 import Session from '#models/session'
@@ -10,13 +9,17 @@ import { DateTime } from 'luxon'
 import Kot from '#models/kot'
 
 export default class OrdersController {
-  /**
-   * START SESSION + CREATE ORDER
-   * Digunakan saat kasir memilih meja
-   */
   public async start(ctx: HttpContext) {
     if (ctx.request.method() === 'GET') {
       const data = await Table.query()
+        .whereHas('session', (q) => {
+          q.where('isActive', 1)
+        })
+        .preload('orders', async (q) => {
+          await q.preload('payment')
+        })
+        .preload('session')
+
       return ctx.inertia.render('cashier/start', { data })
     }
 
@@ -29,13 +32,18 @@ export default class OrdersController {
 
     let session = null
 
-    // ==== CEK SESSION AKTIF ====
     if (table.currentSessionId) {
       session = await Session.find(table.currentSessionId)
 
-      // Gunakan session hanya jika masih aktif
       if (session && session.isActive) {
-        // Tidak cek order, langsung buat order baru
+        const activeOrder = await Order.query()
+          .where('sessionId', session.id)
+          .preload('payment')
+          .first()
+        if (activeOrder!.payment.id) {
+          return ctx.response.redirect('/cashier/order')
+        }
+
         await Order.create({
           tableId,
           sessionId: session.id,
@@ -48,16 +56,9 @@ export default class OrdersController {
           total: 0,
         })
         return ctx.response.redirect('/cashier/order')
-
-        // return {
-        //   status: 'existing-session',
-        //   session,
-        //   order,
-        // }
       }
     }
 
-    // ==== TIDAK ADA SESSION → BUAT SESSION BARU ====
     session = await Session.create({
       tableId,
       sessionToken: crypto.randomUUID(),
@@ -65,12 +66,10 @@ export default class OrdersController {
       createdBy: ctx.auth.user!.id,
     })
 
-    // Update table agar session aktif terikat
     table.status = 'occupied'
     table.currentSessionId = session.id
     await table.save()
 
-    // ==== BUAT ORDER BARU ====
     await Order.create({
       tableId,
       sessionId: session.id,
@@ -84,39 +83,19 @@ export default class OrdersController {
     })
 
     return ctx.response.redirect('/cashier/order')
-    // return {
-    //   status: 'new-session',
-    //   session,
-    //   order,
-    // }
   }
 
-  // public async index(ctx: HttpContext) {
-  //   const page = ctx.request.input('page', 1)
-  //   const category = await MenuCategory.query()
+  public async endSession({ params, response }: HttpContext) {
+    const session = await Session.findBy('sessionToken', params.sessionToken)
 
-  //   const orders = await Order.query()
-  //     .preload('items', (q) =>
-  //       q
-  //         .where('status', 'ordered')
-  //         .andWhere('status', 'cooking')
-  //         .preload('menuItem', (m) => m.preload('category'))
-  //     )
-  //     .preload('table')
-  //     .preload('createdByUser')
-  //     .paginate(page)
+    if (session) {
+      session.isActive = false
+      await session.save()
+    }
 
-  //   return ctx.inertia.render('kitchen/index', {
-  //     orders,
-  //     category,
-  //   })
+    return response.redirect('back')
+  }
 
-  //   return { orders, category }
-  // }
-
-  /**
-   * GET ORDER ACTIVE BY TABLE ID
-   */
   public async show({ params }: HttpContext) {
     const id = params.id
 
@@ -134,9 +113,6 @@ export default class OrdersController {
     return order
   }
 
-  /**
-   * ADD ITEM KE ORDER
-   */
   public async addItem(ctx: HttpContext) {
     const { order_id, menu_item_id, qty } = ctx.request.body()
 
@@ -149,10 +125,8 @@ export default class OrdersController {
         messege: 'Order Closed',
       }
 
-    // pastikan menu ada
     const menu = await MenuItem.findOrFail(menu_item_id)
 
-    // cek apakah item sudah ada di order
     let existingItem = await OrderItem.query()
       .where('order_id', order_id)
       .andWhere('status', 'cart')
@@ -160,7 +134,6 @@ export default class OrdersController {
       .first()
 
     if (existingItem) {
-      // update quantity dan subtotal
       existingItem.quantity++
       existingItem.subtotal = existingItem.quantity * menu.price
       await existingItem.save()
@@ -168,7 +141,6 @@ export default class OrdersController {
       return existingItem
     }
 
-    // buat baru kalau belum ada
     const item = await OrderItem.create({
       orderId: order_id,
       menuItemId: menu_item_id,
@@ -182,9 +154,6 @@ export default class OrdersController {
     return item
   }
 
-  /**
-   * UPDATE QTY
-   */
   public async updateQty(ctx: HttpContext) {
     const { item_id, qty } = ctx.request.body()
 
@@ -202,9 +171,6 @@ export default class OrdersController {
     return item
   }
 
-  /**
-   * DELETE ITEM
-   */
   public async deleteItem(ctx: HttpContext) {
     const { item_id } = ctx.request.body()
 
@@ -225,20 +191,17 @@ export default class OrdersController {
 
     const order = await Order.findOrFail(orderId)
 
-    // Ambil semua item CART
     let cartItems = await OrderItem.query().where('order_id', orderId).andWhere('status', 'cart')
 
     if (cartItems.length === 0) {
       return { error: 'Cart kosong, tidak bisa order.' }
     }
 
-    // Ubah status item → ordered
     await OrderItem.query()
       .where('order_id', orderId)
       .andWhere('status', 'cart')
       .update({ status: 'ordered' })
 
-    // Update status order
     order.status = 'cooking'
     await order.save()
 
@@ -254,9 +217,6 @@ export default class OrdersController {
     return { status: true, message: 'Order dikirim ke dapur.' }
   }
 
-  /**
-   * PAYMENT
-   */
   public async pay(ctx: HttpContext) {
     const orderId = ctx.params.id
 
@@ -264,16 +224,13 @@ export default class OrdersController {
     const table = await Table.findOrFail(order.tableId)
     const session = await Session.findOrFail(table.currentSessionId)
 
-    // Order selesai
     order.status = 'completed'
     await order.save()
 
-    // Sesi tutup
     session.isActive = false
     session.endedAt = DateTime.now()
     await session.save()
 
-    // Table kembali available
     table.status = 'available'
     table.currentSessionId = null
     await table.save()
@@ -281,9 +238,6 @@ export default class OrdersController {
     return { status: 'paid' }
   }
 
-  /**
-   * PRIVATE — HITUNG TOTAL ORDER (subtotal, tax, discount, total)
-   */
   private async recalculateOrder(orderId: number) {
     const order = await Order.findOrFail(orderId)
     const items = await OrderItem.query().where('order_id', orderId)
@@ -306,7 +260,6 @@ export default class OrdersController {
     item.status = request.input('status')
     await item.save()
 
-    // Hanya cek Kot yang terkait dengan item ini
     const kot = await Kot.query().where('orderItemId', item.id).first()
     if (kot) {
       await this.reCheckKotStatus(kot)
@@ -315,13 +268,10 @@ export default class OrdersController {
     return response.json({ success: true })
   }
 
-  // ===================== LOGIKA =====================
-
   private async reCheckKotStatus(kot: Kot) {
     const item = await kot.related('orderItem').query().first()
     if (!item) return
 
-    // Update Kot sesuai OrderItem
     if (item.status === 'delivered') {
       kot.status = 'done'
     } else if (item.status === 'cooking' || item.status === 'ready') {
@@ -331,7 +281,6 @@ export default class OrdersController {
     }
     await kot.save()
 
-    // Update Order terkait
     await this.reCheckOrderStatus(kot.orderId)
   }
 

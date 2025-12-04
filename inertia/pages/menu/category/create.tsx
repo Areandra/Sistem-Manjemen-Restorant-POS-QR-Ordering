@@ -13,7 +13,7 @@ const MenusCreate: React.FC = ({ initialData }: any) => {
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault()
-    post('') // sesuaikan endpoint Anda
+    post('')
   }
 
   return (
@@ -22,7 +22,6 @@ const MenusCreate: React.FC = ({ initialData }: any) => {
 
       <div className="p-6 h-full">
         <div className="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto">
-          {/* Header */}
           <div className="flex justify-between items-center mb-6 border-b pb-4">
             <h2 className="text-2xl font-bold text-gray-800">Tambah Kategori Menu</h2>
 
@@ -34,9 +33,7 @@ const MenusCreate: React.FC = ({ initialData }: any) => {
             </Link>
           </div>
 
-          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Nama Kategori */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Nama Kategori
@@ -53,7 +50,6 @@ const MenusCreate: React.FC = ({ initialData }: any) => {
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
 
-            {/* Deskripsi */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Deskripsi</label>
               <textarea
@@ -68,7 +64,6 @@ const MenusCreate: React.FC = ({ initialData }: any) => {
               )}
             </div>
 
-            {/* Urutan */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Urutan Tampilan
@@ -85,7 +80,6 @@ const MenusCreate: React.FC = ({ initialData }: any) => {
               {errors.sortOrder && <p className="text-red-500 text-xs mt-1">{errors.sortOrder}</p>}
             </div>
 
-            {/* Tombol aksi */}
             <div className="flex justify-end space-x-4 mt-4 border-t pt-6">
               <Link
                 href="/menu"

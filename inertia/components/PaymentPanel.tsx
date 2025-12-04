@@ -46,7 +46,6 @@ export default function PaymentPanel({ order, onPaid, onCancel }: PaymentPanelPr
     <div className="w-96 p-6 bg-white rounded shadow-lg">
       <h2 className="text-lg font-semibold mb-4">Pembayaran</h2>
 
-      {/* Ringkasan Order */}
       <div className="mb-4 space-y-1 text-sm">
         <div className="flex justify-between">
           <span>Subtotal</span>
@@ -68,7 +67,6 @@ export default function PaymentPanel({ order, onPaid, onCancel }: PaymentPanelPr
         </div>
       </div>
 
-      {/* Pilih metode pembayaran */}
       <div className="mb-4">
         <label className="block mb-1 font-medium">Metode Pembayaran</label>
         <select
@@ -83,7 +81,6 @@ export default function PaymentPanel({ order, onPaid, onCancel }: PaymentPanelPr
         </select>
       </div>
 
-      {/* Input jumlah dibayar (untuk cash) */}
       {paymentMethod === 'cash' && (
         <div className="mb-4">
           <label className="block mb-1 font-medium">Jumlah Dibayar</label>
@@ -100,7 +97,6 @@ export default function PaymentPanel({ order, onPaid, onCancel }: PaymentPanelPr
         </div>
       )}
 
-      {/* Tombol bayar */}
       <div className="flex space-x-2">
         <button
           onClick={handlePay}

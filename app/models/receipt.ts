@@ -9,7 +9,7 @@ export default class Receipt extends BaseModel {
   declare id: number
 
   @column()
-  declare orderId: number
+  declare 'orderId': number
 
   @column()
   declare receiptNumber: string
@@ -20,7 +20,7 @@ export default class Receipt extends BaseModel {
   @column.dateTime()
   declare printedAt: DateTime
 
-  @belongsTo(() => Order)
+  @belongsTo(() => Order, {foreignKey: 'orderId'})
   declare order: BelongsTo<typeof Order>
 
   @belongsTo(() => User, { foreignKey: 'printedBy' })

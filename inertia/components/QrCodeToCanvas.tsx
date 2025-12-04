@@ -38,9 +38,14 @@ export default function QRCodeToCanvas({
       width: size,
     }
 
-    QRCode.toCanvas(canvas, `/order/session/${value}`, options, (err) => {
-      if (err) console.error(err)
-    })
+    QRCode.toCanvas(
+      canvas,
+      `https://6a3af013f352.ngrok-free.app/order/session/${value}`,
+      options,
+      (err) => {
+        if (err) console.error(err)
+      }
+    )
   }, [value, size, level, fgColor, bgColor, includeMargin])
 
   return <canvas ref={canvasRef} id="qr-canvas" width={size} height={size} className={className} />

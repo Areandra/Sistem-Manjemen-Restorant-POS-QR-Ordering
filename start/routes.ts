@@ -18,15 +18,15 @@ import KitchensController from '#controllers/kitchens_controller'
 import PaymentsController from '#controllers/payments_controller'
 import CostumersController from '#controllers/costumers_controller'
 import CostumerPagesController from '#controllers/costumer_pages_controller'
+import DashboardController from '#controllers/dashboard_controller'
 
 router.get('/login', [AuthController, 'login'])
-router.get('/register', [AuthController, 'register'])
-
 router.post('/login', [AuthController, 'login'])
-router.post('/register', [AuthController, 'register'])
 
 router
   .group(() => {
+    router.get('/dashboard', [DashboardController, 'dashboard'])
+
     router
       .group(() => {
         router.get('/', [TablesController, 'index'])
@@ -112,8 +112,10 @@ router
           })
           .prefix('order')
         router.post('/payments', [PaymentsController, 'create'])
+        router.post('/session/:sessionToken/end', [OrdersController, 'endSession'])
       })
       .prefix('cashier')
+
     router
       .group(() => {
         router.get('/kot', [KitchensController, 'index'])
@@ -129,12 +131,11 @@ router
 
 router
   .group(() => {
-    // router.get('/session/:sessionToken', [CostumersController, 'show'])
     router.post('/session/:sessionToken/add-item', [CostumersController, 'addItem'])
     router.post('/session/:sessionToken/update-qty', [CostumersController, 'updateQty'])
     router.post('/session/:sessionToken/delete-item', [CostumersController, 'deleteItem'])
     router.post('/session/:sessionToken/place-order', [CostumersController, 'placeOrder'])
-    router.get('/session/:sessionToken', [CostumerPagesController, 'index']) // menu
+    router.get('/session/:sessionToken', [CostumerPagesController, 'index'])
     router.get('/session/:sessionToken/cart', [CostumerPagesController, 'cart'])
     router.get('/session/:sessionToken/order', [CostumerPagesController, 'order'])
     router.get('/session/:sessionToken/categories/:id', [
@@ -144,5 +145,4 @@ router
   })
   .prefix('/order')
 
-
-router.on('/').redirect('/cashier')
+router.on('/').redirect('/dashboard')

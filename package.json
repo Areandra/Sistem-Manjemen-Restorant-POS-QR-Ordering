@@ -66,6 +66,7 @@
     "@adonisjs/vite": "^4.0.0",
     "@inertiajs/react": "^2.2.19",
     "@vinejs/vine": "^3.0.1",
+    "chartjs-node-canvas": "^5.0.0",
     "edge.js": "^6.2.1",
     "lucide-react": "^0.555.0",
     "luxon": "^3.7.2",
