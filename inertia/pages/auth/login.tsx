@@ -1,10 +1,9 @@
 import { useEffect, FormEventHandler } from 'react'
-import { Head, useForm, Link } from '@inertiajs/react'
+import { Head, useForm } from '@inertiajs/react'
 import AuthLayout from '~/layout/AuthLayout'
 
 const COLOR_ACCENT = '#F39C12'
 const COLOR_SUCCESS = '#27AE60'
-const COLOR_PRIMARY = '#3498DB'
 
 export default function Login() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -77,13 +76,6 @@ export default function Login() {
             />
             <span className="text-gray-600">Ingat Saya</span>
           </label>
-
-          <Link
-            href="/forgot-password"
-            className={`text-[${COLOR_PRIMARY}] hover:text-[${COLOR_ACCENT}] font-medium`}
-          >
-            Lupa Kata Sandi?
-          </Link>
         </div>
 
         <button

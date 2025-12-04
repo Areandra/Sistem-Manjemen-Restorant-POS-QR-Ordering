@@ -16,7 +16,6 @@ export default class KitchensController {
       kots,
       category,
     })
-    return { kots, category }
   }
 
   async show(ctx: HttpContext) {

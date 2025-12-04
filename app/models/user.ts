@@ -20,7 +20,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare email: string
 
   @column()
-  declare role: 'admin' | 'cashier' | 'waiter' | 'kitchen'
+  declare role: 'admin' | 'cashier' | 'kitchen'
 
   @column()
   declare avatarUrl: string | null

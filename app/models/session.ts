@@ -36,7 +36,6 @@ export default class Session extends BaseModel {
   @belongsTo(() => User, { foreignKey: 'createdBy' })
   declare createdByUser: BelongsTo<typeof User>
 
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

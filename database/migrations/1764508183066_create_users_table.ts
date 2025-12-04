@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('name').nullable()
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
-      table.enum('role', ['admin', 'cashier', 'waiter', 'kitchen'])
+      table.enum('role', ['admin', 'cashier', 'kitchen']).defaultTo('cashier')
       table.string('avatar_url').nullable()
       table.enum('status', ['active', 'disabled']).defaultTo('active')
 
