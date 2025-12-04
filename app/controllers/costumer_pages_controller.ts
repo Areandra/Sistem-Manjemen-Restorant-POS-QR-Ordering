@@ -7,6 +7,10 @@ export default class CostumerPagesController {
   public async index({ params, inertia }: HttpContext) {
     const { sessionToken } = params
 
+    const session = await Session.findBy('sessionToken', sessionToken)
+
+    if (!session?.isActive) return inertia.render('errors/not_found')
+
     const menuItems = await MenuItem.all()
     const category = await MenuCategory.query()
 
@@ -19,6 +23,11 @@ export default class CostumerPagesController {
 
   async showByCategories(ctx: HttpContext) {
     const { sessionToken, id } = ctx.params
+
+    const session = await Session.findBy('sessionToken', sessionToken)
+
+    if (!session?.isActive) return ctx.inertia.render('errors/not_found')
+
     const data = await MenuCategory.findOrFail(id)
     await data.load('items')
     const category = await MenuCategory.query()
@@ -54,6 +63,8 @@ export default class CostumerPagesController {
     const { sessionToken } = params
 
     const session = await Session.findByOrFail('session_token', sessionToken)
+
+    if (!session?.isActive) return inertia.render('errors/not_found')
 
     await session.load('orders', (query) => {
       query

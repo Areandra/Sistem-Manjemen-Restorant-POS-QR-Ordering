@@ -57,7 +57,7 @@ export default function IndexPage({ menuItems, sessionToken, category }: any) {
           )}
 
           {groupedMenu.map((cat: any) => (
-            <div key={cat.id}>
+            <div key={cat.id + cat.name}>
               <h2 className="text-lg font-bold mb-3 text-gray-800 border-b pb-1">{cat.name}</h2>
 
               <div className="space-y-4">

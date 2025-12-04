@@ -132,10 +132,7 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
           ) : null
         }
       >
-        <MenuCategoriesLayout
-          sidebarItems={category}
-          baseUrl="/cashier/order"
-        >
+        <MenuCategoriesLayout sidebarItems={category} baseUrl="/cashier/order">
           <Head title="Kasir - POS" />
 
           <div className="flex h-[95vh] p-4 overflow-hidden flex flex-col">
@@ -146,10 +143,9 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
               onChange={(e) => setSearch(e.target.value)}
             />
 
-            {/* Container scrollable */}
             <div className="flex-1 overflow-y-auto">
               {groupedMenu.map((cat: any) => (
-                <div key={cat.id} className="mb-6">
+                <div key={cat.id + cat.name} className="mb-6">
                   <h2 className="text-lg font-bold text-gray-800 mb-2 border-b pb-1">{cat.name}</h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                     {cat.items.map((item: any) => (

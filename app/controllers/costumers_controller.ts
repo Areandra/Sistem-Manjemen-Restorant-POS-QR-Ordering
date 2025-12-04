@@ -26,7 +26,7 @@ export default class CustomerOrdersController {
     return { session }
   }
 
-  public async addItem({ params, request, response }: HttpContext) {
+  public async addItem({ params, request, response, inertia }: HttpContext) {
     const { sessionToken } = params
     const { menuItemId, qty } = request.only(['menuItemId', 'qty'])
 
@@ -40,10 +40,7 @@ export default class CustomerOrdersController {
     let activeOrder = session.orders.find((order) => !order.payment?.id)
 
     if (!activeOrder) {
-      return response.badRequest({
-        message: 'NO_ACTIVE_ORDER',
-        reason: 'All bills are paid. Need new bill.',
-      })
+      return inertia.render('errors/bill_closed', { sessionToken })
     }
 
     const menuItem = await MenuItem.find(menuItemId)
@@ -70,7 +67,7 @@ export default class CustomerOrdersController {
 
     await this.recalculate(activeOrder.id)
 
-    return { message: 'Item added', item: orderItem, orderId: activeOrder.id }
+    return response.redirect().back()
   }
 
   public async createNewBill({ params }: HttpContext) {
@@ -115,7 +112,7 @@ export default class CustomerOrdersController {
     await orderItem.save()
     await this.recalculate(activeOrder.id)
 
-    return { message: 'Quantity updated', item: orderItem }
+    return response.redirect().back()
   }
 
   public async deleteItem({ params, request, response }: HttpContext) {
@@ -142,7 +139,7 @@ export default class CustomerOrdersController {
     await orderItem.delete()
     await this.recalculate(activeOrder.id)
 
-    return { message: 'Item deleted' }
+    return response.redirect().back()
   }
 
   public async submit({ params, response }: HttpContext) {
@@ -159,7 +156,7 @@ export default class CustomerOrdersController {
     activeOrder.status = 'pending'
     await activeOrder.save()
 
-    return { message: 'Order sent to cashier', order: activeOrder }
+    return response.redirect().back()
   }
 
   public async placeOrder(ctx: HttpContext) {
@@ -204,7 +201,7 @@ export default class CustomerOrdersController {
     }))
     await Kot.createMany(kot)
 
-    return { status: true, message: 'Order dikirim ke dapur.' }
+    return ctx.response.redirect().back()
   }
 
   private async recalculate(orderId: number) {

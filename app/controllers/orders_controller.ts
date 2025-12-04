@@ -44,7 +44,7 @@ export default class OrdersController {
           .where('sessionId', session.id)
           .preload('payment')
           .first()
-        if (activeOrder!.payment.id) {
+        if (!activeOrder!.payment?.id) {
           return ctx.response.redirect('/cashier/order')
         }
 

@@ -32,12 +32,10 @@ export default function CartPage({ data }: any) {
   return (
     <CustomerOrderLayout sessionToken={data.sessionToken}>
       <div className="max-w-xl mx-auto overflow-x-hidden">
-        <h1 className="p-6 text-2xl font-bold text-gray-800 border-b mb-4">
-          Keranjang Belanja Makanan
-        </h1>
+        <h1 className="p-3 text-xl font-bold text-gray-800 border-b mb-4">Keranjang</h1>
 
         {cartItems.length === 0 && (
-          <p className="text-center text-gray-500 mt-10 text-lg">Keranjang masih kosong 😢</p>
+          <p className="text-center text-gray-500 mt-10 text-lg">Keranjang Kosong</p>
         )}
 
         <div className="space-y-4 px-4 pb-20">
@@ -48,7 +46,7 @@ export default function CartPage({ data }: any) {
             >
               <img
                 src={i.menuItem.imageUrl ?? 'https://source.unsplash.com/300x200/?food'}
-                className="w-20 h-20 rounded-md object-cover flex-shrink-0"
+                className="w-20 rounded-md object-cover flex-shrink-0"
               />
 
               <div className="flex-1 flex flex-col justify-between">
@@ -57,35 +55,33 @@ export default function CartPage({ data }: any) {
                     {i.menuItem.name}
                   </h3>
                   <p className="text-sm font-normal text-gray-500">
-                    Harga Satuan: Rp {parseInt(i.price).toLocaleString()}
+                    Harga: Rp {parseInt(i.price).toLocaleString()}
                   </p>
                 </div>
 
                 <div className="flex justify-between items-end mt-2">
-                  <div className="flex items-center border border-gray-300 rounded-md">
-                    <button
-                      onClick={() => updateQty(i.id, i.quantity - 1)}
-                      className="w-8 h-8 text-gray-700 hover:bg-gray-100 rounded-l-md transition-colors duration-150 text-sm font-bold"
-                    >
-                      -
-                    </button>
-                    <span className="font-semibold text-sm w-8 text-center border-x border-gray-300 h-8 flex items-center justify-center">
-                      {i.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQty(i.id, i.quantity + 1)}
-                      className="w-8 h-8 text-gray-700 hover:bg-gray-100 rounded-r-md transition-colors duration-150 text-sm font-bold"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  {/* Subtotal Item menonjol di sebelah kanan */}
                   <div className="text-right">
                     <p className="font-bold text-lg text-[#F39C12]">
                       Rp {(parseInt(i.price) * i.quantity).toLocaleString()}
                     </p>
                   </div>
+                </div>
+                <div className="flex items-center border border-gray-300 rounded-md">
+                  <button
+                    onClick={() => updateQty(i.id, i.quantity - 1)}
+                    className="w-8 h-8 text-gray-700 hover:bg-gray-100 rounded-l-md transition-colors duration-150 text-sm font-bold"
+                  >
+                    -
+                  </button>
+                  <span className="font-semibold mx-auto text-sm w-8 text-center border-x border-gray-300 h-8 flex items-center justify-center">
+                    {i.quantity}
+                  </span>
+                  <button
+                    onClick={() => updateQty(i.id, i.quantity + 1)}
+                    className="w-8 h-8 text-gray-700 hover:bg-gray-100 rounded-r-md transition-colors duration-150 text-sm font-bold"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
 
@@ -107,16 +103,16 @@ export default function CartPage({ data }: any) {
                 <span className="text-sm text-gray-500">
                   Total Harga ({cartItems.length} item):
                 </span>
-                <span className="text-xl font-extrabold text-[#27AE60]">
+                <span className="text-l font-extrabold text-[#27AE60]">
                   Rp {totalHarga.toLocaleString()}
                 </span>
               </div>
 
               <button
                 onClick={placeOrder}
-                className="bg-[#27AE60] hover:bg-[#219754] text-white py-3 px-8 rounded-lg text-lg font-bold shadow-md transition-colors duration-150"
+                className="bg-[#27AE60] hover:bg-[#219754] text-white py-3 px-8 rounded-lg text-sm font-bold shadow-md transition-colors duration-150"
               >
-                Pesan Sekarang 🚀
+                Pesan
               </button>
             </div>
           </div>
