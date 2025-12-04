@@ -157,6 +157,13 @@ router
     router.on('/cashier').redirect('/cashier/order')
     router.on('/kitchen').redirect('/kitchen/kot')
     router.on('/').redirect('/dashboard')
+
+    router.get('/forbidden', ({ inertia, auth }) => {
+      const user = auth.user
+      const redirectUrl = `/${user!.role}`
+
+      return inertia.render('errors/forbidden', { redirectUrl })
+    })
   })
   .use(middleware.auth())
 
