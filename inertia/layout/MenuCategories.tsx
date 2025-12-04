@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { Link, usePage } from '@inertiajs/react'
-import { Menu as MenuIcon, ArrowUp, ArrowDown, Delete, Edit } from 'lucide-react'
+import { ArrowUp, ArrowDown, Delete, Edit } from 'lucide-react'
 
 export interface SidebarItem {
   id: number
@@ -61,7 +61,6 @@ export default function MenuCategoriesLayout({
                 `}
               >
                 <Link href={getCategoryUrl(item)} className="flex items-center flex-1">
-                  <MenuIcon className="w-5 h-5 mr-3" />
                   {item.name}
                 </Link>
 

@@ -1,22 +1,14 @@
-// File: ~/components/MenuItemList.tsx
 import { router } from '@inertiajs/react'
 import React from 'react'
-import { MenuItem } from '~/pages/menu/index' // Mengimpor tipe MenuItem
-
+import { MenuItem } from '~/pages/menu/index'
 interface MenuItemListProps {
   menuItems: MenuItem[]
 }
 
-// **CATATAN:** Saya menghilangkan duplikasi .map() yang tidak disengaja di kode Anda.
-
 const MenuItemList: React.FC<MenuItemListProps> = ({ menuItems = [] }) => {
   return (
-    // Berikan tinggi tetap yang jelas pada container, misal max-h-screen atau h-[600px]
-    // dan gunakan overflow-hidden agar scroll hanya terjadi di body tabel
     <div className="bg-white h-full max-h-[78.8vh] rounded-xl shadow-lg flex flex-col">
       <div className="flex-shrink-0">
-        {' '}
-        {/* Header tabel tidak ikut di-scroll */}
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -76,7 +68,6 @@ const MenuItemList: React.FC<MenuItemListProps> = ({ menuItems = [] }) => {
                 </td>
               </tr>
             ))}
-            {/* Tambahkan kondisi untuk saat data kosong */}
             {menuItems.length === 0 && (
               <tr>
                 <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">

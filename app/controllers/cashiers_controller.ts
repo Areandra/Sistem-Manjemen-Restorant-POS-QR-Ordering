@@ -6,11 +6,14 @@ export default class CashiersController {
   async index(ctx: HttpContext) {
     const data = await MenuItem.query()
     const category = await MenuCategory.query()
-    const orders = await Order.query().preload('table')
-    // return {
-    //   data,
-    //   category,
-    // }
+    const orders = await Order.query()
+      .preload('table')
+      .whereHas('session', (q) => {
+        q.where('isActive', 1)
+      })
+      .preload('session', (q) => {
+        q.where('isActive', 1)
+      })
 
     return ctx.inertia.render('cashier/index', {
       data,

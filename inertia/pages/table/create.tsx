@@ -2,7 +2,6 @@ import React, { FormEventHandler } from 'react'
 import { Head, Link, useForm } from '@inertiajs/react'
 import AdminLayout from '~/layout/AdminLayout'
 
-// Opsi kapasitas meja
 const capacityOptions = [2, 4, 6, 8, 10, 12]
 
 const TablesCreate: React.FC = ({ initialData }: any) => {
@@ -36,11 +35,8 @@ const TablesCreate: React.FC = ({ initialData }: any) => {
             </Link>
           </div>
 
-          {/* FORM */}
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Kolom kiri */}
             <div className="space-y-6">
-              {/* Nomor Meja */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">Nomor Meja</label>
                 <input
@@ -56,7 +52,6 @@ const TablesCreate: React.FC = ({ initialData }: any) => {
                 )}
               </div>
 
-              {/* Kapasitas */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Kapasitas (Orang)
@@ -77,7 +72,6 @@ const TablesCreate: React.FC = ({ initialData }: any) => {
               </div>
             </div>
 
-            {/* Kolom kanan: Kosong atau info tambahan */}
             <div className="space-y-6">
               <div className="p-6 bg-gray-50 rounded-xl border border-dashed border-gray-300 text-center">
                 <p className="text-sm text-gray-600">
@@ -86,7 +80,6 @@ const TablesCreate: React.FC = ({ initialData }: any) => {
               </div>
             </div>
 
-            {/* Tombol aksi */}
             <div className="md:col-span-2 flex justify-end space-x-4 mt-4 border-t pt-6">
               <Link
                 href="/table"

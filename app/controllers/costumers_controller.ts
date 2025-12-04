@@ -1,4 +1,3 @@
-// app/controllers/customerOrdersController.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '#models/order'
 import OrderItem from '#models/order_item'

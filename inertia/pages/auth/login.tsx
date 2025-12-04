@@ -90,31 +90,6 @@ export default function Login() {
           Login
         </button>
       </form>
-
-      <div className="mt-10 text-center">
-        <p className="text-xs text-gray-400 mb-4">Instant Login</p>
-
-        <div className="flex gap-4">
-          <button
-            onClick={() => (window.location.href = '/login/oauth/google')}
-            className="flex-1 flex items-center justify-center border border-gray-300 py-2 rounded-md text-sm hover:bg-gray-50 transition"
-          >
-            <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 mr-2 fill-current">
-              {/* icon */}
-            </svg>
-            Continue with Google
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-6 text-center text-sm">
-        <p>
-          Don't have an account?{' '}
-          <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-900">
-            Register
-          </Link>
-        </p>
-      </div>
     </AuthLayout>
   )
 }
