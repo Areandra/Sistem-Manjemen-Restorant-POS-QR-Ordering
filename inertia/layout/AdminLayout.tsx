@@ -24,7 +24,7 @@ export default function AdminLayout({ children, overflow }: any) {
       name: 'Users',
       icon: User,
       href: '/users',
-      active: currentUrl.includes('/bookings'),
+      active: currentUrl.includes('/users'),
     },
     {
       name: 'Menu',

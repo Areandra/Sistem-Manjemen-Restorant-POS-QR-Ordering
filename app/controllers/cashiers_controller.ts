@@ -47,7 +47,7 @@ export default class CashiersController {
   async show(ctx: HttpContext) {
     const id = ctx.params.id
 
-    const isNumber = !isNaN(Number(id))
+    const isNumber = !Number.isNaN(Number(id))
 
     if (isNumber) {
       const data = await MenuItem.findOrFail(Number(id))

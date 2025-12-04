@@ -21,7 +21,7 @@ interface MenuItemsIndexProps {
 
 const MenuItemsIndex = ({ category = [], data = [] }: MenuItemsIndexProps) => {
   const toggleAvailability = (itemId: number, currentStatus: boolean) => {
-    router.post(`/menu/${itemId}/toggle-availability`, { isAvailable: !currentStatus })
+    router.post(`/menu/${itemId}/toggle-availability`, { status: !currentStatus })
   }
 
   return (

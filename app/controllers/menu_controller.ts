@@ -29,7 +29,7 @@ export default class MenuController {
   async show(ctx: HttpContext) {
     const id = ctx.params.id
 
-    const isNumber = !isNaN(Number(id))
+    const isNumber = !Number.isNaN(Number(id))
 
     if (isNumber) {
       const data = await MenuItem.findOrFail(Number(id))
@@ -169,6 +169,16 @@ export default class MenuController {
 
     await category.save()
     await below.save()
+
+    return response.redirect('/menu')
+  }
+
+  async togleStatus({ params, response, request }: HttpContext) {
+    const menu = await MenuItem.findOrFail(params.id)
+
+    menu.isAvailable = request.only(['status']).status
+
+    await menu.save()
 
     return response.redirect('/menu')
   }
