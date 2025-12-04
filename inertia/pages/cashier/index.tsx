@@ -133,11 +133,7 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
         }
       >
         <MenuCategoriesLayout
-          sidebarItems={groupedMenu.map((c: any) => ({
-            id: c.id,
-            name: c.name,
-            sortOrder: c.sortOrder,
-          }))}
+          sidebarItems={category}
           baseUrl="/cashier/order"
         >
           <Head title="Kasir - POS" />
