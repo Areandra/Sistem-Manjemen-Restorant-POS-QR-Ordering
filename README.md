@@ -4,18 +4,7 @@ Sistem Manajemen Restoran modern yang dirancang untuk mempermudah operasional re
 
 ---
 
-![Node.js](https://img.shields.io/badge/Node.js-20+-green)
-![npm](https://img.shields.io/badge/npm-10+-blue)
-![AdonisJS](https://img.shields.io/badge/AdonisJS-6-%236E4AFF)
-![React](https://img.shields.io/badge/React-19-61DAFB)
-![InertiaJS](https://img.shields.io/badge/InertiaJS-React-purple)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-%233178C6)
-![Vite](https://img.shields.io/badge/Vite-6-yellow)
-![MySQL](https://img.shields.io/badge/Database-MySQL%2FMariaDB-blue)
-![QRCode](https://img.shields.io/badge/QR_Code-qrcode-green)
-![ChartJS](https://img.shields.io/badge/Chart-ChartJS-orange)
-![MariaDB](https://img.shields.io/badge/MariaDB-10.4+-orange)
-![License](https://img.shields.io/badge/license-MIT-red)
+![Node.js](https://img.shields.io/badge/Node.js-20+-green) ![npm](https://img.shields.io/badge/npm-10+-blue) ![AdonisJS](https://img.shields.io/badge/AdonisJS-6-%236E4AFF) ![React](https://img.shields.io/badge/React-19-61DAFB) ![InertiaJS](https://img.shields.io/badge/InertiaJS-React-purple) ![TypeScript](https://img.shields.io/badge/TypeScript-5-%233178C6) ![Vite](https://img.shields.io/badge/Vite-6-yellow) ![MySQL](https://img.shields.io/badge/Database-MySQL%2FMariaDB-blue) ![QRCode](https://img.shields.io/badge/QR_Code-qrcode-green) ![ChartJS](https://img.shields.io/badge/Chart-ChartJS-orange) ![MariaDB](https://img.shields.io/badge/MariaDB-10.4+-orange) ![License](https://img.shields.io/badge/license-MIT-red)
 
 ---
 
