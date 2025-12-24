@@ -1,6 +1,6 @@
 import env from '#start/env'
 import { defineConfig } from '@adonisjs/lucid'
-import fs from 'fs'
+// import fs from 'fs'
 
 const dbConfig = defineConfig({
   connection: 'mysql',
