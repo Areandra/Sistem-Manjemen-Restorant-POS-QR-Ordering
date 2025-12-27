@@ -30,13 +30,9 @@ export default function MenuCategoriesTopLayout({
   }
 
   return (
-    <div className="space-y-6 bg-gray-50 flex flex-col min-h-screen">
-      <div className="w-full bg-white border-b border-gray-200 px-4 py-3 shadow-sm sticky top-0 z-20">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-bold text-lg text-gray-900">Kategori</span>
-        </div>
-
-        <div className="flex gap-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent pb-2">
+    <div className="bg-gray-50 h-screen pb-16 flex flex-col min-h-screen">
+      <div className="w-full mb-2 bg-white border-b border-gray-200 p-4 shadow-sm sticky top-0 z-20">
+        <div className="flex gap-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
           {items
             .sort((a, b) => a.sortOrder - b.sortOrder)
             .map((item) => (

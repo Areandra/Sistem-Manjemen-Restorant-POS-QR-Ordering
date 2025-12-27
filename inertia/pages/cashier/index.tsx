@@ -3,7 +3,7 @@ import CashierLayout from '~/layout/CashierLayout'
 import OrderDetailPanel from '~/components/OrderDetailPanel'
 import ActiveOrderPanel from '~/components/ActiveOrderPanel'
 import { useEffect, useState } from 'react'
-import MenuCategoriesLayout from '~/layout/MenuCategories'
+import MenuCategoriesTopLayout from '~/layout/MenuCategorisTop'
 
 export default function PosIndex({ category = [], data = [], orders = [] }: any) {
   const currentUrl = usePage().url
@@ -24,10 +24,11 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
     .filter((cat: any) => cat.items.length > 0)
 
   useEffect(() => {
+    console.log('dipanggil nih', selectedOrderId)
     if (!selectedOrderId) return
 
     const fetchData = async () => {
-      const res = await fetch(`${currentUrl}/${selectedOrderId}`, {
+      const res = await fetch(`${currentUrl.split('/categories')[0]}/${selectedOrderId}`, {
         method: 'GET',
       })
       const order = await res.json()
@@ -128,14 +129,15 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
               updateItemQty={updateItemQty}
               delItem={delItem}
               orderAll={orderAll}
+              setSelectedOrderId={setSelectedOrderId}
             />
           ) : null
         }
       >
-        <MenuCategoriesLayout sidebarItems={category} baseUrl="/cashier/order">
+        <MenuCategoriesTopLayout sidebarItems={category} baseUrl="/cashier/order">
           <Head title="Kasir - POS" />
 
-          <div className="flex h-[95vh] p-4 overflow-hidden flex flex-col">
+          <div className="flex h-screen p-4 overflow-hidden flex flex-col">
             <input
               type="text"
               placeholder="Search menu..."
@@ -143,7 +145,7 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
               onChange={(e) => setSearch(e.target.value)}
             />
 
-            <div className="flex-1 overflow-y-auto">
+            <div className="h-full pb-32 overflow-y-auto">
               {groupedMenu.map((cat: any) => (
                 <div key={cat.id + cat.name} className="mb-6">
                   <h2 className="text-lg font-bold text-gray-800 mb-2 border-b pb-1">{cat.name}</h2>
@@ -172,7 +174,7 @@ export default function PosIndex({ category = [], data = [], orders = [] }: any)
               ))}
             </div>
           </div>
-        </MenuCategoriesLayout>
+        </MenuCategoriesTopLayout>
       </ActiveOrderPanel>
     </CashierLayout>
   )

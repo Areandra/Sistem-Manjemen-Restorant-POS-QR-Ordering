@@ -24,6 +24,12 @@ export default class CashiersController {
 
   async showByCategories(ctx: HttpContext) {
     const id = ctx.params.id
+    const category = await MenuCategory.query()
+    const activeCategory = await MenuCategory.findOrFail(id)
+    const data = await MenuItem.query().whereHas('category', (q) =>
+      q.where('name', activeCategory.name)
+    )
+
     const orders = await Order.query()
       .preload('table')
       .whereHas('session', (q) => {
@@ -33,12 +39,8 @@ export default class CashiersController {
         q.where('isActive', 1)
       })
 
-    const data = await MenuCategory.findOrFail(id)
-    await data.load('items')
-    const category = await MenuCategory.query()
-
     return ctx.inertia.render('cashier/index', {
-      data: data.items,
+      data: data,
       category,
       orders,
     })

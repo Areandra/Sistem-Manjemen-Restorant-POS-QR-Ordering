@@ -1,10 +1,16 @@
-import { TrashIcon } from 'lucide-react'
+import { QrCode, TrashIcon, X } from 'lucide-react'
 import { useState } from 'react'
 import PaymentPanel from './PaymentPanel'
 import RecieptModal from './RecieptModal'
 import QRCodeToCanvas from './QrCodeToCanvas'
 
-export default function OrderDetailPanel({ order, updateItemQty, delItem, orderAll }: any) {
+export default function OrderDetailPanel({
+  order,
+  updateItemQty,
+  delItem,
+  orderAll,
+  setSelectedOrderId,
+}: any) {
   if (!order) return null
   const [showPayment, setShowPayment] = useState(false)
   const [receiptData, setReceiptData] = useState<any>(null)
@@ -88,8 +94,16 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
 
   return (
     <>
-      <aside className="w-80 h-screen border-l bg-white flex flex-col shadow-xl z-50 flex-shrink-0 pb-16">
-        <h2 className="font-semibold p-4 border-b text-lg">Order Details</h2>
+      <aside className="sw-80 h-screen border-l bg-white flex flex-col shadow-xl z-50 flex-shrink-0 pb-16">
+        <div className="flex flex-row p-4 border-b justify-between">
+          <h2 className="font-semibold text-lg">Order Details</h2>
+          <button
+            onClick={() => setSelectedOrderId(0)}
+            className="bg-orange-600 text-white rounded-lg font-semibold"
+          >
+            <X />
+          </button>
+        </div>
 
         <div className="p-4 border-b bg-gray-50">
           <p className="font-semibold text-gray-800">Meja: {table?.tableNumber}</p>
@@ -148,20 +162,22 @@ export default function OrderDetailPanel({ order, updateItemQty, delItem, orderA
             <span className="font-bold text-lg">{formatRp(order.total)}</span>
           </div>
 
-          <button
-            onClick={() => setShowQR(true)}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold mb-3"
-          >
-            QR Code
-          </button>
+          <div className="flex flex-row gap-x-2">
+            <button
+              onClick={() => orderAll(order.id)}
+              className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold mb-3"
+              disabled={isPaid}
+            >
+              Order
+            </button>
 
-          <button
-            onClick={() => orderAll(order.id)}
-            className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold mb-3"
-            disabled={isPaid}
-          >
-            Order
-          </button>
+            <button
+              onClick={() => setShowQR(true)}
+              className="bg-blue-600 text-white p-2 rounded-lg font-semibold mb-3"
+            >
+              <QrCode />
+            </button>
+          </div>
 
           {!isPaid && (
             <button

@@ -28,7 +28,7 @@ export default function IndexPage({ menuItems, sessionToken, category }: any) {
   return (
     <CustomerOrderLayout sessionToken={sessionToken}>
       <MenuCategoriesTopLayout sidebarItems={category} baseUrl={`/order/session/${sessionToken}`}>
-        <div className="max-w-xl mx-auto pb-20 space-y-6">
+        <div className="max-w-xl px-4 mx-auto pb-20 space-y-6">
           {showNewBillConfirm && (
             <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
               <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">

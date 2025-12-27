@@ -1,7 +1,7 @@
+import { Head } from '@inertiajs/react'
 import React from 'react'
 import AdminLayout from '~/layout/AdminLayout'
 
-// --- 1. Komponen Kartu Ringkasan (Top Summary Cards) ---
 interface SummaryCardProps {
   icon: React.ReactNode
   title: string
@@ -48,6 +48,7 @@ export default function Dashboard({
 
   return (
     <AdminLayout overflow="hidden">
+      <Head title='Dashboard'/>
       <div className="h-full flex flex-col w-full bg-gray-50 p-5 overflow-y-auto">
         <header className="flex items-center mb-4 space-x-4">
           <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
@@ -61,8 +62,10 @@ export default function Dashboard({
                 <SummaryCard key={data.title} {...data} />
               ))}
             </div>
-            <Section title="Total Revenue" className=" flex-1 flex flex-col">
-              <p className="text-3xl font-extrabold text-gray-900 mb-4">$184,839</p>
+            <Section title="Total Pendapatan" className=" flex-1 flex flex-col">
+              <p className="text-3xl font-extrabold text-gray-900 mb-4">
+                {summaryData?.[2]?.value}
+              </p>
               <div className="bg-gray-100 flex-1 flex items-center justify-center rounded-lg">
                 <img
                   src={`data:image/png;base64,${revenueChart}`}

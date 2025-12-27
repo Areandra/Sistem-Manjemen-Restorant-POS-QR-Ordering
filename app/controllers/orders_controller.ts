@@ -141,6 +141,7 @@ export default class OrdersController {
       .where('order_id', order_id)
       .andWhere('status', 'cart')
       .andWhere('menu_item_id', menu_item_id)
+      .andWhere('notes', "")
       .first()
 
     if (existingItem) {

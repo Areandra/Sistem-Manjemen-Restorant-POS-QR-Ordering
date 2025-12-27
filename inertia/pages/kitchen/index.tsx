@@ -153,7 +153,7 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
     <CashierLayout headerLinks={links}>
       <MenuCategoriesLayout sidebarItems={category} baseUrl="/kitchen/kot">
         <Head title="Kitchen" />
-        <div className="w-full p-4 min-h-screen">
+        <div className="w-full p-4 h-screen">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-semibold text-[#5B4636]">KOT</h1>
 
@@ -189,8 +189,8 @@ export default function KotBoard({ kots, category }: KotBoardProps) {
             </div>
           </div>
 
-          <div className='flex justify-center'>
-            <div className="grid grid-cols-1 md:grid-cols-2 l:grid-cols-2 xl:grid-cols-5 gap-8">
+          <div className='flex justify-center h-full overflow-y-auto'>
+            <div className="grid grid-cols-1 md:grid-cols-2 l:grid-cols-2 xl:grid-cols-5 gap-8 h-fit pb-32">
               {groupMode === 'flat' && filteredKots.map((k) => <RenderKotCard key={k.id} {...k} />)}
 
               {groupMode === 'table' &&

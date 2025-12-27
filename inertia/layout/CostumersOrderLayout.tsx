@@ -28,7 +28,7 @@ export default function CustomerOrderLayout({ children, sessionToken }: any) {
   return (
     <div className="flex min-h-screen font-sans pb-16">
       <div className="w-full h-full">
-        <div className="max-w-xl mx-auto px-4 ">{children}</div>
+        <div className="max-w-xl mx-auto">{children}</div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-2xl border-t border-gray-100">
         <nav className="flex h-16 max-w-lg mx-auto justify-around items-center">

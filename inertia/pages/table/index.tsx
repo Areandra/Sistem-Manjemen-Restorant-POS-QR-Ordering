@@ -16,7 +16,7 @@ const TablesIndex = ({ tables }: any) => {
     <AdminLayout overflow={'hidden'}>
       <Head title="Manajemen Meja" />
 
-      <div className="p-6">
+      <div className="p-6 h-screen">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Manajemen Meja</h2>
 
@@ -36,7 +36,7 @@ const TablesIndex = ({ tables }: any) => {
           />
         </div>
 
-        <div className="h-[77.5vh] overflow-y-auto">
+        <div className="h-full pb-16 overflow-y-auto">
           <TableList tables={tables.data} />
         </div>
       </div>

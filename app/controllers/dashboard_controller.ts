@@ -247,6 +247,6 @@ export default class DashboardController {
     const revenueChart = await this.generateRevenueChart()
     const top5Menu = await this.getFavMenu()
     const topCategoriesChart = await this.getTopCategoryChart()
-    return ctx.inertia.render('home', { summaryData, revenueChart, top5Menu, topCategoriesChart })
+    return ctx.inertia.render('dashboard', { summaryData, revenueChart, top5Menu, topCategoriesChart })
   }
 }
