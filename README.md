@@ -1,204 +1,198 @@
-# Sistem Manajemen Restoran POS & QR Ordering
+```markdown
+# 📚 GiveNTech - Sistem Manajemen Peminjaman Fasilitas & Barang Kampus
 
-Sistem Manajemen Restoran modern yang dirancang untuk mempermudah operasional restoran, kafe, dan food court. Sistem ini mengintegrasikan POS, QR Ordering per sesi, Manajemen Meja, dan Kitchen Order Ticket dalam satu platform real-time.
+**GiveNTech** adalah platform manajemen peminjaman fasilitas dan barang modern yang dirancang untuk kampus, organisasi, maupun perusahaan. Sistem ini mengintegrasikan **Booking Online**, **Verifikasi QR Code**, **Tracking Lokasi**, **Approval Workflow**, dan **Notifikasi Real-time** dalam satu ekosistem yang *seamless*.
+
+Dibangun dengan arsitektur **Monorepo Full-Stack** menggunakan **AdonisJS 6** (Backend) dan **React + Inertia.js** (Frontend), menjamin performa tinggi, keamanan tipe data (TypeScript), dan pengalaman pengguna setara Single Page Application (SPA).
 
 ---
+
+## 🎯 Quick Info
+
+| Aspek | Detail |
+| :--- | :--- |
+| **Framework** | AdonisJS 6 (Full-Stack TypeScript) |
+| **Frontend** | React 19 + InertiaJS |
+| **Backend** | Node.js 20+ |
+| **Database** | MySQL / MariaDB |
+| **Cache & OTP** | Redis 6+ |
+| **API Interface** | REST & GraphQL |
+| **Realtime** | Socket.IO |
+| **Maps** | Leaflet |
+| **Notifikasi** | WhatsApp Cloud API |
 
 ![Node.js](https://img.shields.io/badge/Node.js-20+-green)
-![npm](https://img.shields.io/badge/npm-10+-blue)
-![AdonisJS](https://img.shields.io/badge/AdonisJS-6-%236E4AFF)
-![React](https://img.shields.io/badge/React-19-61DAFB)
-![InertiaJS](https://img.shields.io/badge/InertiaJS-React-purple)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-%233178C6)
-![Vite](https://img.shields.io/badge/Vite-6-yellow)
-![MySQL](https://img.shields.io/badge/Database-MySQL%2FMariaDB-blue)
-![QRCode](https://img.shields.io/badge/QR_Code-qrcode-green)
-![ChartJS](https://img.shields.io/badge/Chart-ChartJS-orange)
-![MariaDB](https://img.shields.io/badge/MariaDB-10.4+-orange)
-![License](https://img.shields.io/badge/license-MIT-red)
+![AdonisJS](https://img.shields.io/badge/AdonisJS-6-purple)
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![License](https://img.shields.io/badge/License-MIT-orange)
 
 ---
 
-## ⚙️ Kebutuhan Lingkungan & Tools
+## ⭐ Fitur Utama
 
-### System Requirements (Digunakan Di Project)
+### 1. 📅 Manajemen Peminjaman (Booking System)
+- **Availability Check:** Sistem otomatis mengecek ketersediaan ruangan/barang agar tidak terjadi bentrokan jadwal.
+- **Approval Workflow:** Peminjaman melalui tahap *Pending* -> *Confirmed* (oleh Admin) -> *Picked Up* -> *Returned*.
+- **Form Interaktif:** Integrasi peta (Leaflet) untuk pemilihan lokasi fasilitas secara visual.
 
-- **Node.js:**  
-  Versi **≥ 20.x** _(direkomendasikan LTS, contoh stabil: 20.11.0 atau di atasnya, dan telah berhasil pada 24.11.0)_  
-- **npm:**  
-  Mengikuti Node.js _(direkomendasikan LT,S telah berhasil pada 11.6.4)_.
-- **MySQL/MariaDB:**  
-  Direkomendasikan versi **MariaDB 10.4.32+** atau **MySQL 8.x**.  
-  _(Project telah diuji berjalan lancar di MariaDB 10.4.32, namun kompatibilitas dengan MySQL 8 ke atas juga baik untuk fitur JSON & integritas data)_
-- **OS:**  
-  Teruji berjalan di **Windows 11** & **Ubuntu 24.04.3 LTS**.
+### 2. 🔐 Verifikasi & Keamanan
+- **QR Code Unique:** Setiap booking menghasilkan QR Code unik dengan proteksi HMAC untuk mencegah pemalsuan.
+- **Scan Verification:** Fitur scanner bawaan bagi Admin untuk memverifikasi proses pengambilan dan pengembalian.
+- **OTP Registration:** Verifikasi akun baru menggunakan kode OTP yang dikirim ke email dan disimpan di **Redis** (TTL 5 menit).
 
-### Tools Pengembangan Rekomendasi
+### 3. 🔔 Notifikasi Cerdas
+- **WhatsApp Cloud API:** Pengiriman notifikasi otomatis terkait status approval dan pengingat denda ke WhatsApp user.
+- **Real-time Updates:** Sinkronisasi status antar perangkat secara instan menggunakan Socket.IO.
 
-- **Code Editor:**  
-  [VSCode](https://code.visualstudio.com/)
-- **Database Client GUI:**  
-  [phpMyAdmin (XAMPP)](https://www.apachefriends.org/) atau [DBeaver](https://dbeaver.io/)
-- **Package Manager:**  
-  npm (default Node.js)
-- **Git:**  
-  [Git Bash](https://gitforwindows.org/) untuk cloning dll
-
-#### Opsional untuk workflow development:
-- **ngrok/localtunnel** _(testing dari HP di luar LAN)_
-- **Docker Desktop** _(jika ingin isolasi MySQL/MariaDB/Node)_
+### 4. 🗺️ Lokasi & Fasilitas
+- **Geo-tagging:** Penentuan titik koordinat (Latitude/Longitude) untuk setiap ruangan.
+- **Fasilitas Management:** CRUD lengkap untuk Admin mengelola inventaris beserta kondisi barang (Baik/Rusak/Hilang).
 
 ---
 
-## 🚦 Tahapan Instalasi & Setup
+## 💻 Prasyarat Sistem
 
-### 1. **Clone & Instalasi**
+Sebelum instalasi, pastikan environment Anda memiliki:
+1. **Node.js**: Versi 20.x atau lebih baru.
+2. **NPM**: Versi 10.x ke atas.
+3. **Database**: MySQL atau MariaDB yang berjalan.
+4. **Redis**: Server Redis yang berjalan (Wajib untuk fitur OTP).
+5. **Git**: Untuk cloning repository.
+
+---
+
+## 🚀 Instalasi & Setup
+
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi di local machine:
+
+### 1. Clone Repository
 ```bash
-git clone https://github.com/Areandra/Sistem-Manjemen-Restorant-POS-QR-Ordering.git
-cd Sistem-Manjemen-Restorant-POS-QR-Ordering
+git clone [https://github.com/Areandra/GiveNTech.git](https://github.com/Areandra/GiveNTech.git)
+cd GiveNTech
+
+```
+
+### 2. Install Dependencies
+
+```bash
 npm install
-cp .env.example .env
+
 ```
 
-### 2. **Generate Application Key**
+### 3. Setup Environment Variable
+
+Copy file contoh konfigurasi dan generate key aplikasi:
+
 ```bash
+cp .env.example .env
 node ace generate:key
+
 ```
 
-### 3. **Konfigurasi .env**
-Edit file `.env`:
-```env
-HOST=192.168.x.x
-PORT=3333
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nama_db
-DB_USER=root
-DB_PASSWORD=isi_password_db_anda
-SUPER_PASSWORD=isi_super_password_anda
-```
-> **WAJIB:** Gunakan IP LAN agar perangkat lain dapat akses aplikasi untuk testing QR Order.
+### 4. Setup Database
 
----
+Buat database di MySQL, sesuaikan kredensial di `.env`, lalu jalankan migrasi:
 
-### ⚠️ Disclaimer Sebelum Migrasi Database
-
-- **MIGRASI bisa GAGAL** apabila _container database_, _versi DB_, atau _default config_ berbeda-beda _(contoh: kolom yang `notNullable` **tanpa default value** pada beberapa engine/database/container akan error) lakukan perbaikian manual pada migration_.
-- Pastikan _user/permission/database_ sudah sesuai, dan __create database secara MANUAL__ jika migrasi error karena DB belum ada.
-- Periksa kembali skema dan environment _jika deploy ke Docker dengan image database bukan MariaDB 10.4.x/mySQL 8.x_ (cek log error migrasi!).
-
----
-
-### 4. **Migrasi Database**
 ```bash
 node ace migration:run
+# Opsional: Jalankan seeder untuk data awal
+node ace db:seed
+
 ```
 
-### 5. **Build (Opsional untuk Produksi)**
-```bash
-npm run build
-```
+### 5. Jalankan Server
 
-### 6. **Jalankan Developer**
 ```bash
 npm run dev
+
 ```
-Akses aplikasi di browser: `http://<HOST>:<PORT>`
+
+Akses di: **http://localhost:3333**
 
 ---
 
-## 🔑 **Pembuatan Admin & Admin Commands**
+## 🔐 Konfigurasi Environment (.env)
 
-### Alur Pembuatan & Manajemen Admin
+Contoh konfigurasi utama yang harus diperhatikan:
 
-Setelah server berjalan & database siap, buat/atur admin dengan perintah CLI berikut:
+```env
+# --- DATABASE ---
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_DATABASE=giventech
 
-```bash
-node ace app:admin create
+# --- REDIS (Wajib untuk OTP) ---
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+# --- WHATSAPP CLOUD API ---
+PHONE_NUMBER_ID=your_id
+WA_ACCESS_TOKEN=your_token
+
+# --- SMTP EMAIL ---
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=email@gmail.com
+SMTP_PASSWORD=app_specific_password
+
 ```
-- Masukkan `SUPER_PASSWORD` sesuai yang di `.env` ketika diminta.
-- Wajib mengisi **nama**, **email**, **password** admin.
-- Hanya **SATU** admin aktif di sistem (_jika sudah ada, perintah tidak dapat dijalankan kecuali destroy/reset_).
-
-#### Perintah Lain pada Admin Commands
-
-- **Reset Password Admin**
-  ```bash
-  node ace app:admin password-reset <email_admin>
-  ```
-  > Akan meminta super password dan password baru.
-
-- **Hapus Admin**
-  ```bash
-  node ace app:admin destroy <email_admin>
-  ```
-  > Hanya dapat dijalankan jika ingin membersihkan admin utama (super password diperlukan).
-
-> Pastikan email admin sesuai dengan yang tercatat di database!
-
-### 📋 Catatan:
-- Semua aksi admin melalui CLI (bukan dari antarmuka web).
-- SUPER_PASSWORD wajib diingat dan disimpan aman!
-- Jika pembuatan admin atau migrasi error, cek log error pada terminal & pastikan database/config benar.
 
 ---
 
-## 📱 Disclaimer QR Order
+## 🔄 Alur Penggunaan (User Flow)
 
-> **Fitur QR Order menggunakan QR unik tiap sesi/order (bukan statis per meja), sehingga tiap sesi memiliki URI khusus & histori sendiri. Untuk menguji QR, PASTIKAN aplikasi diakses via IP LAN (`HOST` di `.env`), perangkat lain dalam jaringan sama, BUKAN `localhost`/`127.0.0.1`.**
-
----
-
-## 📝 Alur & Fitur Utama
-
-### Role & Alur Inti
-
-- **Admin:** Setup awal, manajemen user/meja/menu.
-- **Kasir:** Proses openning session, daftar pesanan, pembayaran, closing session.
-- **Pelanggan:** Scan QR (per sesi), buat pesanan, pantau status pesanan & bill langsung lewat perangkat sendiri.
-- **Dapur:** Pantau pesanan masuk, update status produksi tiap pesanan/sesi.
-
-### Alur Penggunaan
-1. **Admin setup** data restoran: meja, kategori, menu, dan user lain.
-2. **Kasir** Open Session dari meje kosong
-3. **Pelanggan datang**, scan QR SESSION, akses menu, pesan secara mandiri.
-4. **Kasir**, Pemesanan dapat di lakukan di kasir juga
-5. **Order masuk** ke kasir & dapur secara realtime.
-6. **Kasir** konfirmasi, proses pembayaran, close sesi_order.
-7. **Kitchen** update status pesanan (masak-saji-selesai).
-
-### Fitur Lengkap:
-- CLI Admin: buat/reset password/destroy
-- QR Session Ordering: QR unik tiap sesi/many_order (bukan one QR per table)
-- CRUD Master: menu, meja, user role, laporan, histori order
-- Transaksi: order, bayar, close sesi, billing digital
-- Role & Otorisasi: SUPER_PASSWORD, role logic
-- Realtime Notifikasi: React/Inertia SPA, refresh hanya terjadi jika pengolahan data di lakukan di perangkat lain
-- Statistik: grafik penjualan, performa sesi/meja
-- Modular Command: lint, build, serve, test, typecheck, dsb
+1. **Registrasi:** User mendaftar -> Verifikasi OTP email via Redis -> Akun Aktif.
+2. **Booking:** Pilih fasilitas melalui List atau Map -> Isi form peminjaman -> Submit.
+3. **Approval:** Admin meninjau permintaan di Dashboard Admin -> Setujui/Tolak.
+4. **Pickup:** User menunjukkan QR Code -> Admin Scan -> Status: *Picked Up*.
+5. **Return:** User mengembalikan barang -> Admin Scan -> Cek Kondisi -> Status: *Done*.
 
 ---
 
-### Developer Commands
-- `npm run dev` → Jalankan server development
-- `npm run build` → Build produksi
-- `npm run lint` → Cek style code
-- `npm run test` → Jalankan unit test
-- `npm run typecheck` → TypeScript check
+## 📂 Struktur Folder
+
+```
+GiveNTech/
+├── app/
+│   ├── Controllers/    # Logika Request (Auth, Booking, Facility)
+│   ├── Models/         # Skema Database
+│   ├── Services/       # Business Logic (WhatsApp, QR, Socket)
+│   └── GraphQL/        # Schema & Resolvers
+├── database/           # Migrasi & Seeder
+├── inertia/            # FRONTEND (React & TypeScript)
+│   ├── pages/          # Halaman UI
+│   └── components/     # Komponen Reusable
+├── start/              # Route & Kernel Konfigurasi
+└── public/             # Aset Statis
+
+```
 
 ---
 
-## Kontribusi & Lisensi
+## 🚨 Troubleshooting
 
-Silakan fork/pull request/issue untuk kontribusi.  
-Lisensi: [MIT].
+| Masalah | Solusi |
+| --- | --- |
+| **Error: Redis Connection Refused** | Pastikan `redis-server` sudah berjalan. |
+| **WhatsApp tidak terkirim** | Cek validitas `WA_ACCESS_TOKEN` di Meta Developers. |
+| **Vite Manifest Not Found** | Jalankan `npm run dev` atau build frontend terlebih dahulu. |
 
 ---
 
-## Kontak
+## 🤝 Kontribusi & Lisensi
 
-- **Owner:** Areandra
-- **Repo:** [https://github.com/Areandra/Sistem-Manjemen-Restorant-POS-QR-Ordering](https://github.com/Areandra/Sistem-Manjemen-Restorant-POS-QR-Ordering)
-- **Linkedin** [https://www.linkedin.com/in/muhammad-ariel-4899312a0/](https://www.linkedin.com/in/muhammad-ariel-4899312a0/)
+Dibuat dengan ❤️ oleh **Areandra**.
+Project ini dilisensikan di bawah **MIT License**.
+
 ---
+
+<div align="center">
+<b>⭐ Berikan Star jika project ini membantu Anda! ⭐</b>
+</div>
+
+```
+
+```
